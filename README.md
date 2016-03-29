@@ -42,9 +42,9 @@ Modifications in regard to original version:
   - some modifications from Dan of 'RL Vision':
     - 'bookmark feature' with modified keyboard shortcuts and bookmarks
        shown on "Selection margin" (shown up if necessary)
-        Alt+.: toggle bookmark on/off for for current line
-        Ctrl+Shift+.: jump to next bookmark
-        Ctrl+Shift+.,: jump to previous bookmark
+        `Alt+.`: toggle bookmark on/off for for current line
+        `Ctrl+Shift+.`: jump to next bookmark
+        `Ctrl+Shift+.,`: jump to previous bookmark
     - number of selected lines is reported in the statusbar together 
       with the other statistics ("Sel Ln")
   - reordered list of encodings to place Central European ones just after
@@ -52,6 +52,7 @@ Modifications in regard to original version:
   - added button on About dialog for extracting support files (License, 
     FAQ, scripts, etc.) to program's directory
   - changed defaults:
+```
         [Settings]
         SaveSettings=0
         SaveRecentFiles=1
@@ -75,6 +76,7 @@ Modifications in regard to original version:
         SingleFileInstance=1
         [Default Text]
         Default Style=font:Lucida Console; charset:238; size:8
+```
   - pseudo-handwritten recommendation overlayed on editor contents (just for fun; can be disabled by changing `RecommendationVisible` setting in the `.ini` file to `0`; the setting can be also set to higher values allowing recommendation to stay visible until the size of the file reaches the specified limit)
 
 ## replacing notepad.exe
