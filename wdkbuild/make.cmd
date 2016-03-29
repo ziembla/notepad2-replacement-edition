@@ -4,8 +4,8 @@ echo.
 setlocal
 chdir /d "%~dp0"
 
-rem set WDKBASEDIR=C:\WinDDK\7600.16385.1
-set WDKBASEDIR=D:\Programme\Microsoft wdk7
+set WDKBASEDIR=D:\WinDDK\7600.16385.1
+rem set WDKBASEDIR=D:\Programme\Microsoft wdk7
 
 if /i "%1" == "i386" call :i386
 if /i "%1" == "amd64" call :amd64
