@@ -393,6 +393,39 @@
 #define IDS_EXPORT_FAIL                 50040
 #define IDS_CMDLINEHELP                 60000
 
+
+#define IDB_WZ_RECOMMEND                62001
+#define IDC_WZ_RECOMMEND                62002
+#define IDC_REPLACENOTEPAD              62003
+#define IDS_NOTEPADREPLACEMENTOK        62004
+#define IDS_NOTEPADREPLACEMENTERROR     62005
+#define IDS_NOTEPADREPLACEMENTOFF       62006
+#define IDC_INIPATH                     62007
+#define IDC_EXTRACTFILES                62008
+#define IDS_EXTRACTFILESOK              62009
+#define IDS_EXTRACTFILESERROR           62010
+#define IDM_FILE_COPYPATHNAME           62011
+#define IDR_SUPPORT_LICENSE             62012
+#define IDR_SUPPORT_TXT                 62013
+#define IDR_SUPPORT_SCR_REPLACEMENT_E   62014
+#define IDR_SUPPORT_SCR_REPLACEMENT_D   62015
+//#define IDR_SUPPORT_SCR_REPLACEMENT_E64 62016
+//#define IDR_SUPPORT_SCR_REPLACEMENT_D64 62017
+#define IDR_SUPPORT_SCR_SHELL_E         62018
+#define IDR_SUPPORT_SCR_SHELL_D         62019
+#define IDR_SUPPORT_DOC_FAQ             62020
+#define IDR_SUPPORT_DOC_REPLACEMENT     62021
+#define BME_EDIT_BOOKMARKNEXT           62022
+#define BME_EDIT_BOOKMARKPREV           62023
+#define BME_EDIT_BOOKMARKTOGGLE         62024
+#define BME_EDIT_BOOKMARKCLEAR          62025
+#define IDR_SUPPORT_DOC_ENCODING        62026
+#define IDC_EMAILWZ                     62027
+#define IDC_EMAILWZ2                    62028
+#define IDB_WZ_RECOMMEND_MASK           62029
+#define IDS_DOCSIZE_ESTIMATED           62030
+
+
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED
@@ -404,3 +437,8 @@
 #define _APS_NEXT_SYMED_VALUE           0
 #endif
 #endif
+
+//#ifdef IDC_STATIC
+//#undef IDC_STATIC
+//#endif
+//#define IDC_STATIC (-1)

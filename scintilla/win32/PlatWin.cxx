@@ -410,6 +410,7 @@ public:
 	void DrawTextNoClip(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore, ColourAllocated back);
 	void DrawTextClipped(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore, ColourAllocated back);
 	void DrawTextTransparent(PRectangle rc, Font &font_, int ybase, const char *s, int len, ColourAllocated fore);
+	void DrawBitmap(PRectangle rc, void *hbitmap, void *hbitmapMask);
 	void MeasureWidths(Font &font_, const char *s, int len, int *positions);
 	int WidthText(Font &font_, const char *s, int len);
 	int WidthChar(Font &font_, char ch);
@@ -817,6 +818,47 @@ void SurfaceImpl::DrawTextTransparent(PRectangle rc, Font &font_, int ybase, con
 		}
 	}
 }
+
+
+void SurfaceImpl::DrawBitmap(PRectangle rc, void *hbitmapParameter, void *hbitmapMaskParameter) {
+	BITMAP bitmap;
+	HDC hMemDC;
+	HGDIOBJ hBitmapOld;
+
+	HBITMAP hbitmap = (HBITMAP)hbitmapParameter;
+	HBITMAP hbitmapMask = (HBITMAP)hbitmapMaskParameter;
+
+	if (hbitmap == NULL || hbitmapMask == NULL)
+		return;
+
+	hMemDC = ::CreateCompatibleDC(hdc);
+
+	::GetObject(hbitmapMask, sizeof(BITMAP), &bitmap);
+	hBitmapOld = ::SelectObject(hMemDC, hbitmapMask);
+	::BitBlt(hdc, 
+		rc.left, rc.top, 
+		rc.right - rc.left,
+		rc.bottom - rc.top, 
+		hMemDC, 0, 0, SRCAND);
+
+	::SelectObject(hMemDC, hbitmap);
+	::BitBlt(hdc, 
+		rc.left, rc.top, 
+		rc.right - rc.left,
+		rc.bottom - rc.top, 
+		hMemDC, 0, 0, SRCPAINT);
+
+	//StretchBlt(hDC, 
+	//	lpRect->left, lpRect->top, 
+	//	lpRect->right - lpRect->left,
+	//	lpRect->bottom - lpRect->top, 
+	//	hMemDC, 
+	//	0, 0, bitmap.bmWidth, bitmap. bmHeight, 
+	//	SRCCOPY);
+	::SelectObject(hMemDC, hBitmapOld);
+	::DeleteDC(hMemDC);
+}
+
 
 int SurfaceImpl::WidthText(Font &font_, const char *s, int len) {
 	SetFont(font_);

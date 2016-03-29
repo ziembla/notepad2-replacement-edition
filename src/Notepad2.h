@@ -143,5 +143,14 @@ LRESULT MsgCommand(HWND,WPARAM,LPARAM);
 LRESULT MsgNotify(HWND,WPARAM,LPARAM);
 
 
+BOOL NotepadReplacement_IsEnabled();
+void NotepadReplacement_ExecuteChange();
+BOOL NotepadReplacement_SetMapping(BOOL enabled, BOOL showErrorMessage);
+//BOOL Is64Bit();
+void ExtractSupportFiles();
+BOOL ExtractResource(int id, LPCWSTR filename);
+
+void ShowSelectionMargin();
+
 
 ///   End of Notepad2.h   \\\

@@ -499,6 +499,11 @@ DWORD WINAPI DirList_IconThread(LPVOID lpParam)
       lvi.iSubItem = 0;
       ListView_SetItem(hwnd,&lvi);
     }
+
+
+    //Sleep(1000);
+
+
     iItem++;
   }
 

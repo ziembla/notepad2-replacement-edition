@@ -1,0 +1,806 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="HTML Tidy for Windows (vers 25 March 2009), see www.w3.org" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="MSSmartTagsPreventParsing" content="TRUE" />
+
+  <title>Notepad2 - Frequently Asked Questions (FAQs)</title>
+</head>
+
+<body>
+  <h1>Notepad2 ― Frequently Asked Questions (FAQs)</h1>
+
+  <ul>
+    <li><a href="#q1">Will Notepad2 ever have a tabbed multiple document interface?</a></li>
+
+    <li><a href="#q2">What new features are planned for the next version of Notepad2?</a></li>
+
+    <li><a href="#q3">Why not adding automatic source code formatting?</a></li>
+
+    <li><a href="#q4">How do I set a default file extension?</a></li>
+
+    <li><a href="#q5">How do I change the default font?</a></li>
+
+    <li><a href="#q6">How can I turn off font smoothing (anti-aliasing)?</a></li>
+
+    <li><a href="#q7">How to change the appearance of the caret (cursor)?</a></li>
+
+    <li><a href="#q8">Is there a way to reduce line spacing?</a></li>
+
+    <li><a href="#q9">How to stop the text selection from extending beyond the end of lines?</a></li>
+
+    <li><a href="#q10">Can't I hide the control characters?</a></li>
+
+    <li><a href="#q11">How do I select the proper character set?</a></li>
+
+    <li><a href="#q12">Is it possible to convert text from ANSI to Unicode and UTF-8?</a></li>
+
+    <li><a href="#q13">Why are my UTF-8 files loaded as ANSI?</a></li>
+
+    <li><a href="#q14">Why are my text files sometimes garbled?</a></li>
+
+    <li><a href="#q15">Why is the text sometimes messed up on copy and paste?</a></li>
+
+    <li><a href="#q16">And why is the text sometimes clipped on copy and paste?</a></li>
+
+    <li><a href="#q17">How can I edit MS-DOS (OEM) text files?</a></li>
+
+    <li><a href="#q18">Does Notepad2 support ISO encodings?</a></li>
+
+    <li><a href="#q19">What about bidirectional text support?</a></li>
+
+    <li><a href="#q20">Why are binary files sometimes modified when saving?</a></li>
+
+    <li><a href="#q21">What's the problem with long lines?</a></li>
+
+    <li><a href="#q22">Why is Notepad2 sometimes slow?</a></li>
+
+    <li><a href="#q23">Why is the horizontal scrollbar not calculated properly?</a></li>
+
+    <li><a href="#q24">Is text search always case sensitive?</a></li>
+
+    <li><a href="#q25">Can I do multiline find and replace?</a></li>
+
+    <li><a href="#q26">How to find and replace tab characters?</a></li>
+
+    <li><a href="#q27">How to use regular expression search in Notepad2?</a></li>
+
+    <li><a href="#q28">How to use basic Emacs file variables?</a></li>
+
+    <li><a href="#q29">How to update timestamps in the text?</a></li>
+
+    <li><a href="#q30">How to rebuild Notepad2 from the source code?</a></li>
+
+    <li><a href="#q31">Could you please explain how to add or modify syntax schemes?</a></li>
+
+    <li><a href="#q32">How can I use ASP VBScript highlighting?</a></li>
+
+    <li><a href="#q33">How to set Notepad2 as the IE source viewer?</a></li>
+
+    <li><a href="#q34">Is there a way to pass short filenames to external tools?</a></li>
+
+    <li><a href="#q35">How can I open multiple Notepad2 windows?</a></li>
+
+    <li><a href="#q36">How to display a file with a certain syntax scheme?</a></li>
+
+    <li><a href="#q37">How to jump to a specified position when a file is opened?</a></li>
+
+    <li><a href="#q38">Any way to make the toolbar buttons look more distinct?</a></li>
+
+    <li><a href="#q39">How to disable the large file warning message?</a></li>
+
+    <li><a href="#q40">Why is there a security warning when running Notepad2?</a></li>
+
+    <li><a href="#q41">Why are my program settings not saved at all?</a></li>
+
+    <li><a href="#q42">Why are some settings not saved properly?</a></li>
+
+    <li><a href="#q43">Where is the Notepad2 ini-file located?</a></li>
+
+    <li><a href="#q44">How to use separate ini-files for each user?</a></li>
+
+    <li><a href="#q45">How to import and export syntax scheme settings?</a></li>
+
+    <li><a href="#q46">How to reset the Notepad2 notification messages?</a></li>
+
+    <li><a href="#q47">What about the [Settings2] section of the ini-file?</a></li>
+
+    <li><a href="#q48">Where are the translated versions of Notepad2?</a></li>
+
+    <li><a href="#q49">Am I allowed to ... ?</a></li>
+
+    <li><a href="#q50">Why should I use the x64 build of Notepad2?</a></li>
+
+    <li><a href="#q51">How to use the Notepad2 Setup Tool to install and update Notepad2?</a></li>
+  </ul>
+
+  <h3 id="q1">Will Notepad2 ever have a tabbed multiple document interface?</h3>
+
+  <p>Personally, I prefer the true Notepad-like single document interface for my daily work with small scripts and files. As this is by far the most frequently asked question, here's a few more arguments to confirm my (of course subjective) point of view:</p>
+
+  <ul>
+    <li>The window manager of my operating system already provides a nice taskbar, where open windows are grouped together and displayed with a nice icon.</li>
+  </ul>
+
+  <ul>
+    <li>When working with several applications at the same time, any document can be accessed with Alt+Tab (or from the taskbar), this is not possible with multiple document applications (use Alt+Tab first, then Ctrl+Tab or similar to find the document inside the application; moreover not all opened documents are visible in the taskbar).</li>
+  </ul>
+
+  <ul>
+    <li>Recent versions of Windows provide <a href="no-tabs.png">taskbar thumbnail previews</a> for grouped icons. Like this, it's very easy to navigate between multiple documents. Not sure if there's a light-weight method to achieve this for tabbed applications (however, Internet Explorer 8 for Windows 7 supports this).</li>
+  </ul>
+
+  <ul>
+    <li>Notepad2 can be used on multiple monitors or across multiple virtual desktops, this is not possible either with a multiple document interface.</li>
+  </ul>
+
+  <ul>
+    <li>I can see a bigger area of my desktop with many small Notepad2 windows opened than I could with one big multiple document window.</li>
+  </ul>
+
+  <p>So I'm sorry I can't promise I will ever work on a tabbed multiple document interface for Notepad2.</p>
+
+  <h3 id="q2">What new features are planned for the next version of Notepad2?</h3>
+
+  <p>At the moment, Notepad2 does most of the things I want it to do, so don't expect breaking news in the next time. I might one day think of adding the features listed below:</p>
+
+  <ul>
+    <li>Select font for print headers and footers</li>
+
+    <li>Copy to clipboard as RTF</li>
+
+    <li>Full screen mode</li>
+  </ul>
+
+  <p>The following features are beyond my personal design goal of a simple Notepad-like application, so it's unlikely I will ever be working on them:</p>
+
+  <ul>
+    <li>Tabbed multiple document interface</li>
+
+    <li>Split document view</li>
+
+    <li>Code formatting</li>
+
+    <li>Code Explorer</li>
+
+    <li>Code folding</li>
+
+    <li>Code auto-completion</li>
+
+    <li>User defined syntax schemes</li>
+
+    <li>Scripting language / macros</li>
+
+    <li>Incremental search</li>
+
+    <li>Spell checking</li>
+
+    <li>Hex editing</li>
+
+    <li>Horizontal ruler</li>
+
+    <li>FTP client</li>
+
+    <li>Plugins</li>
+
+    <li>Skins</li>
+
+    <li>Hyperlinks (not supported by Scintilla)</li>
+
+    <li>Auto-update feature</li>
+
+    <li>Project management</li>
+  </ul>
+
+  <h3 id="q3">Why not adding automatic source code formatting?</h3>
+
+  <p>Automatic source code formatting may be something very handy, of course. But adding this to Notepad2 would mean a lot of extra effort on incorporating and maintaining the required libraries, and this would increase the size of the Notepad2 executable file. Also, to be complete, this would have to be offered for any syntax scheme supported by Notepad2. And, a big deal of additional user interfaces might be necessary to make the many options of the source code formatters available to the user.</p>
+
+  <p>My philosophy is to use simple, small and fast external tools for this purpose. I'm using <a href="http://tidy.sourceforge.net">HTML Tidy</a> to pretty print my html source from the "Open with..." dialog of Notepad2 (using a batch file to specify a configuration file with the HTML Tidy options). Other source code formatters, such as <a href="http://astyle.sourceforge.net">Artistic Style</a> for C, C++, C# and Java, are also available as command line tools, and can easily be used from within Notepad2.</p>
+
+  <h3 id="q4">How do I set a default file extension?</h3>
+
+  <p>The default extension for saved files can be specified in the Notepad2 ini-file, this is explained <a href="#q47">below</a>.</p>
+
+  <h3 id="q5">How do I change the default font?</h3>
+
+  <p>View, Default Font (Alt+F12).</p>
+
+  <h3 id="q6">How can I turn off font smoothing (anti-aliasing)?</h3>
+
+  <p>From Notepad2 version 4.1.24, there's a new style setting to control smoothing of font edges (anti-aliasing), that can be set for the Default Style and 2nd Default Style items, and is valid globally for all other styles (see <a href="scrshot4.png">screenshot</a>).</p>
+
+  <p>The <tt>smoothing</tt> option can be set to either of the following values:</p>
+
+  <dl>
+    <dt><tt>none</tt></dt>
+
+    <dd>Disable font smoothing (can be preferred for certain fixed-width fonts).</dd>
+
+    <dt><tt>standard</tt></dt>
+
+    <dd>Enable standard font smoothing (introduced with Windows 9x).</dd>
+
+    <dt><tt>cleartype</tt></dt>
+
+    <dd>Enable ClearType smoothing (optimized for LCD displays).</dd>
+
+    <dt><tt>default</tt></dt>
+
+    <dd>Use the system default font smoothing method.</dd>
+  </dl>
+
+  <p>Note that this setting only takes effect if the appropriate anti-aliasing method is available and activated on your system. Usually, only screen display (and not printing) is affected by font smoothing. If this setting is not present, Notepad2 uses the system default font smoothing method, but tries to enforce ClearType rendering for some fonts introduced with recent versions of Windows and Microsoft Office <em>(Calibri, Cambria, Candara, Consolas, Constantia, Corbel, and Segoe UI)</em>.</p>
+
+  <h3 id="q7">How to change the appearance of the caret (cursor)?</h3>
+
+  <p>Go to the Customize Schemes dialog (Ctrl+F12) and unfold the Default Text node. Modify the Caret (Color, Size 1-3) item to change the caret color and shape (valid entries are <tt>size:1</tt>, <tt>2</tt>, <tt>3</tt> or <tt>block</tt>). Add <tt>noblink</tt> to stop the caret blinking.</p>
+
+  <h3 id="q8">Is there a way to reduce line spacing?</h3>
+
+  <p>The line height is determined by the tallest items, namely Matching Braces and Matching Braces Error, by default. Adapt their size to reduce line spacing to default values, as in this <a href="scrshot1.png">screenshot</a>.</p>
+
+  <p>As of version 4.0, you may also need to reset the <em>Extra Line Spacing</em> setting to restore default line spacing.</p>
+
+  <h3 id="q9">How to stop the text selection from extending beyond the end of lines?</h3>
+
+  <p>Open the Customize Schemes dialog (Ctrl+F12), unfold the Default Text node and find the Selected Text item, then remove the <tt>eolfilled</tt> attribute.</p>
+
+  <h3 id="q10">Can't I hide the control characters?</h3>
+
+  <p>No, the control characters (NUL, ACK, BEL, etc.) can't be hidden, but the size can be reduced: open the Customize Schemes dialog (Ctrl+F12), unfold the Default Text node, find the Control Characters (Font) item, and modify the size property.</p>
+
+  <h3 id="q11">How do I select the proper character set?</h3>
+
+  <p>Select the character set (script) matching your local encoding from the font dialog, as in this <a href="scrshot2.png">screenshot</a>. Alternatively, the character set can be entered manually, but only for the Default Style and 2nd Default Style items, as demonstrated in this <a href="scrshot3.png">screenshot</a>.</p>
+
+  <h3 id="q12">Is it possible to convert text from ANSI to Unicode and UTF-8?</h3>
+
+  <p>Proper text conversion is performed when switching to a new encoding (File, Encoding). However, this action will clear the editor undo history. When converting from Unicode and UTF-8 back to ANSI, non-supported characters will be replaced by default values (usually ?).</p>
+
+  <h3 id="q13">Why are my UTF-8 files loaded as ANSI?</h3>
+
+  <p>The ANSI and UTF-8 encodings share the common 7-bit ASCII subset. A file without any extended characters (ä, é, õ) will be loaded as ANSI by default.</p>
+
+  <p>To ensure a file is loaded as UTF-8, either use the UTF-8 signature (which has been invented for this purpose), or add some comments with extended characters to your file. Or, you could set UTF-8 as the default encoding (File, Encoding, Default), this will load ASCII files - but also new and zero-byte files - in UTF-8 mode.</p>
+
+  <p>The default settings dialog box has an option to preferably load ASCII files as UTF-8, even if UTF-8 is not set as the default. This option is temporarily enabled when reloading the current file using Shift+F8.</p>
+
+  <p>To reload a file in default ANSI mode bypassing encoding detection, press Ctrl+Shift+A.</p>
+
+  <h3 id="q14">Why are my text files sometimes garbled?</h3>
+
+  <p>Unicode detection <a href="http://blogs.msdn.com/b/oldnewthing/archive/2007/04/17/2158334.aspx">may fail</a> on some systems and result in display of non-Unicode text as garbled Unicode text. The Notepad2 statusbar usually indicates <em>Unicode</em> for such cases, indicating no BOM was present in the file, and the encoding was guessed. To skip automatic Unicode detection (and just rely on BOMs for Unicode file identification), enable the appropriate option (File, Encoding, Default). This will not affect UTF-8 detection.</p>
+
+  <p>Another reason for garbled text may be that the current font does not support all the necessary glyphs required for proper display. To check this, choose another default font (Alt+F12), preferably a general-purpose typeface like "Arial" or "Arial Unicode MS".</p>
+
+  <h3 id="q15">Why is the text sometimes messed up on copy and paste?</h3>
+
+  <p>When working in ANSI mode and setting a character set (script) that does not correspond to your system default ANSI encoding, text may be converted improperly when copying to and pasting from clipboard, in some cases.</p>
+
+  <p>Also, pasting Unicode characters while in ANSI mode causes non-supported characters to be replaced by default values (usually ?).</p>
+
+  <p>This can be fixed by explicitly setting the desired ANSI encoding as the default, i.e. if your system default ANSI code page is 1252, set Windows-1252 instead of ANSI (1252) as your default. This enforces UTF-8 mode, internally, and ensures proper encoding conversion for copy and paste operations.</p>
+
+  <h3 id="q16">And why is the text sometimes clipped on copy and paste?</h3>
+
+  <p>The Windows clipboard interprets NULL bytes as text end markers. The Scintilla source code editing component is capable of displaying NULL bytes, but copy and paste operations will not work properly due to the Windows clipboard specifications.</p>
+
+  <p><em>Note: to find an replace NULL bytes, use the term</em> <tt>\x00</tt> <em>and activate Regular expression search.</em></p>
+
+  <h3 id="q17">How can I edit MS-DOS (OEM) text files?</h3>
+
+  <p>This is explained in the <a href="notepad2-Encoding.html#t7">Notepad2 Encoding Tutorial</a>.</p>
+
+  <h3 id="q18">Does Notepad2 support ISO encodings?</h3>
+
+  <p>As of version 4.0, Notepad2 supports some of the ISO encodings. Details can be found in the <a href="notepad2-Encoding.html">Notepad2 Encoding Tutorial</a>.</p>
+
+  <h3 id="q19">What about bidirectional text support?</h3>
+
+  <p>Currently, bidirectional (right-to-left) text, such as Arabic, Hebrew and others, is not supported by Notepad2. Adding this feature would require modification of the <a href="http://www.scintilla.org">Scintilla</a> editing component.</p>
+
+  <h3 id="q20">Why are binary files sometimes modified when saving?</h3>
+
+  <p>Apparently random changes (even without any modifications by the user) may be caused by the two options to ensure consistent line endings and to strip trailing blanks when saving. These options can be disabled in the File, Line Endings, Default dialog box.</p>
+
+  <p>Notepad2 has not been designed to handle binary files, and many editing operations, including copying to and pasting from clipboard, will not work properly. I recommend using one of the numerous excellent <a href="http://www.google.com/search?q=free+hex+editor+windows">free hex editors for Windows</a>, instead.</p>
+
+  <h3 id="q21">What's the problem with long lines?</h3>
+
+  <p>Notepad2 is based on the <a href="http://www.scintilla.org">Scintilla</a> editing component, which has not been designed to handle text with very long lines. Source code editing with usual line lengths works perfectly.</p>
+
+  <h3 id="q22">Why is Notepad2 sometimes slow?</h3>
+
+  <p>Same answer as above: Notepad2 is based on the <a href="http://www.scintilla.org">Scintilla</a> editing component, which has been designed to work with usual source code files. Working with large files or very long lines, especially when using find and replace operations, may reduce Notepad2 performance.</p>
+
+  <p>In some cases, find and replace operations can be terribly slow, even if not used on overlong lines. This seems to happen mostly in ANSI mode if the system default ANSI code page belongs to the DBCS family, but does not occur on every system. Explicitly setting the default encoding to a Windows encoding, instead of ANSI, can sometimes improve search speed, i.e. if your system default ANSI code page is 1258, set Windows-1258 instead of ANSI (1258) as your default.</p>
+
+  <h3 id="q23">Why is the horizontal scrollbar not calculated properly?</h3>
+
+  <p>As one single line may contain many different syntax styles, proper line length calculation requires high performance. For this reason, a fixed width is assumed. The end of long lines can always be reached using the End key or the scrollbar arrows.</p>
+
+  <h3 id="q24">Is text search always case sensitive?</h3>
+
+  <p>The most recent versions of the <a href="http://www.scintilla.org">Scintilla</a> source code editing component support case insensitive search for non-ASCII characters. This feature is available in Notepad2 4.2 and above.</p>
+
+  <p>However, this does not apply to regular expression search: extended characters, which are not part of the basic ASCII character set, are always treated case sensitive.</p>
+
+  <h3 id="q25">Can I do multiline find and replace?</h3>
+
+  <p>This is possible when activating the Transform backslashes option in the find and replace dialog boxes. Enter <tt>\n</tt> to represent the LF character, or <tt>\r</tt> for the CR. If line ending mode is set to Windows (CR+LF), <tt>\r\n</tt> has to be used to represent newline sequences.</p>
+
+  <p>To perform a replacement operation with multiline text as the replacement, it's easier to copy the text to the clipboard first, and then use <tt>^c</tt> as a placeholder for the clipboard contents in the replacement field.</p>
+
+  <h3 id="q26">How to find and replace tab characters?</h3>
+
+  <p>If you activate Regular expression search in the find and replace dialog boxes, the <tt>\t</tt> sequence represents a tab character both in the find and in the replace text.</p>
+
+  <h3 id="q27">How to use regular expression search in Notepad2?</h3>
+
+  <p>This is explained in the Notepad2 Readme File: <a href="Notepad2.txt">Notepad2.txt</a>.</p>
+
+  <p>Notepad2 supports only a limited subset of regular expressions, as provided by built-in engine of the Scintilla source code editing component. The advantage is that it has a very small footprint. There's currently no plans to integrate a more advanced regular expressions engine, but this may be an option for future development.</p>
+
+  <p><em>Note: Regular expression search is limited to single lines, only.</em></p>
+
+  <h3 id="q28">How to use basic Emacs file variables?</h3>
+
+  <p>Notepad2 can parse a few of the <a href="http://www.gnu.org/software/emacs/manual/html_node/emacs/Variable-Index.html#Variable-Index">Emacs variables</a> that can be used in source code files. The first 512 bytes of a file (and, if nothing is found, also the last 512 bytes) are checked for the following constructs (can be manually disabled in the <a href="#q47">ini-file</a>, or the File, Encoding, Default dialog box, respectively):</p>
+
+  <blockquote>
+    <pre>
+coding: utf-8;
+mode: python;
+tab-width: 8;
+c-basic-indent: 2;
+indent-tabs-mode: nil;
+c-tab-always-indent: true;
+fill-column: 64;
+truncate-lines: false;
+enable-local-variables: true;
+</pre>
+  </blockquote>
+
+  <dl>
+    <dt><tt>coding</tt></dt>
+
+    <dd>Serves as a <em>file encoding tag</em>. Details about using encoding tags are outlined in the <a href="notepad2-Encoding.html#t3">Notepad2 Encoding Tutorial</a>.</dd>
+
+    <dt><tt>mode</tt></dt>
+
+    <dd>Indicates the syntax scheme to be used, and is either the name of a scheme, or a file name extension.</dd>
+
+    <dt><tt>tab-width</tt></dt>
+
+    <dt><tt>c-basic-indent</tt></dt>
+
+    <dd>Denote tab and indentation settings.</dd>
+
+    <dt><tt>indent-tabs-mode</tt></dt>
+
+    <dd>Determines whether to insert tabs as spaces (<tt>nil</tt>, <tt>false</tt> or <tt>0</tt>) or not (<tt>true</tt> or <tt>1</tt>).</dd>
+
+    <dt><tt>c-tab-always-indent</tt></dt>
+
+    <dd>Configures whether the tab key reformats indenting whitespace (<tt>true</tt> or <tt>1</tt>) or not (<tt>nil</tt>, <tt>false</tt> or <tt>0</tt>).</dd>
+
+    <dt><tt>fill-column</tt></dt>
+
+    <dd>Sets the desired limit for long lines (but does not automatically display the visual marker).</dd>
+
+    <dt><tt>truncate-lines</tt></dt>
+
+    <dd>Controls word wrap (enable: <tt>nil</tt>, <tt>false</tt> or <tt>0</tt>; disable: <tt>true</tt> or <tt>1</tt>).</dd>
+
+    <dt><tt>enable-local-variables</tt></dt>
+
+    <dd>Disables file variable parsing (<tt>nil</tt>, <tt>false</tt> or <tt>0</tt>), but keeps evaluating encoding tags. To bypass both file variable and encoding tag parsing, reload the file with Alt+F8. Adapt the settings mentioned above to permanently turn off file variables and encoding tags.</dd>
+  </dl>
+
+  <h3 id="q29">How to update timestamps in the text?</h3>
+
+  <p>Press Shift+F5 to execute a regular expression replacement macro defined in the Notepad2 ini-file. The example below updates CVS-like timestamps:</p>
+
+  <blockquote>
+    <pre>
+[Settings2]
+...
+TimeStamp=\$Date:[^\$]+\$ | $Date: %Y/%m/%d %H:%M:%S $
+</pre>
+  </blockquote>
+
+  <h3 id="q30">How to rebuild Notepad2 from the source code?</h3>
+
+  <p>Refer to the <tt>Readme.txt</tt> file included in the Notepad2 source zip for more information.</p>
+
+  <h3 id="q31">Could you please explain how to add or modify syntax schemes?</h3>
+
+  <p>Refer to the <tt>Readme.txt</tt> file included in the Notepad2 source zip for more information.</p>
+
+  <h3 id="q32">How can I use ASP VBScript highlighting?</h3>
+
+  <p>VBScript highlighting inside ASP files is triggered by the following statement:</p>
+
+  <blockquote>
+    <pre>
+&lt;%@ Language=VBScript %&gt;
+</pre>
+  </blockquote>
+
+  <h3 id="q33">How to set Notepad2 as the IE source viewer?</h3>
+
+  <p>Find the following registry key (create if necessary):</p>
+
+  <blockquote>
+    <pre>
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\View Source Editor\Editor Name
+</pre>
+  </blockquote>
+
+  <p>Set the default value to the full path of Notepad2.exe.</p>
+
+  <p><em>Update:</em> With IE8, press F12 to open the Developer Tools, select File, Customize View Source, and find Notepad2.exe.</p>
+
+  <h3 id="q34">Is there a way to pass short filenames to external tools?</h3>
+
+  <p>This can be achieved using the <tt>for</tt> command in a batch script:</p>
+
+  <blockquote>
+    <pre>
+for %%i in %1 do echo %%~si
+</pre>
+  </blockquote>
+
+  <h3 id="q35">How can I open multiple Notepad2 windows?</h3>
+
+  <p>Either disable the Reuse Window option from the Settings menu, or run Notepad2.exe with the <tt>/n</tt> command line switch to allow multiple windows.</p>
+
+  <p>To simultaneously open multiple files in new windows from the command line, use the <tt>+</tt> command line switch:</p>
+
+  <blockquote>
+    <pre>
+notepad2.exe + file1.txt file2.txt
+</pre>
+  </blockquote>
+
+  <h3 id="q36">How to display a file with a certain syntax scheme?</h3>
+
+  <p>Run Notepad2.exe with the <tt>/s</tt> command line switch and specify a partial syntax scheme name, or a file name extension that has been associated with a syntax scheme in the Scheme Customization dialog. The following examples display an Apache configuration file with standard configuration file highlighting:</p>
+
+  <blockquote>
+    <pre>
+Notepad2.exe /s ini file.conf
+</pre>
+  </blockquote>
+
+  <blockquote>
+    <pre>
+Notepad2.exe /s "Configuration Files" file.conf
+</pre>
+  </blockquote>
+
+  <p>The following shortcut switches can be used to directly select common syntax schemes: <tt>/d</tt> (Default Text), <tt>/h</tt> (Web Source Code) and <tt>/x</tt> (XML Document).</p>
+
+  <h3 id="q37">How to jump to a specified position when a file is opened?</h3>
+
+  <p>Use the <tt>/g</tt> command line switch to specify a line, and optionally a column, to jump to:</p>
+
+  <blockquote>
+    <pre>
+Notepad2.exe /g 10,5 file.txt
+</pre>
+  </blockquote>
+
+  <p>The following command can be used to jump to the end of a file:</p>
+
+  <blockquote>
+    <pre>
+Notepad2.exe /g -1 file.txt
+</pre>
+  </blockquote>
+
+  <p>To jump to a specified text passage, use the <tt>/m</tt> option. There's optional modifiers to match the last occurrence (<tt>/m-</tt>), use regular expression search (<tt>/mr</tt>) or backslash substitution (<tt>/mb</tt>). The last two modifiers are exclusive, and it's not possible to match double quotes (as these are used to separate command line arguments).</p>
+
+  <p>Use something like this to jump to the last entry of a log file:</p>
+
+  <blockquote>
+    <pre>
+Notepad2.exe /mr- "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]:" file.txt
+</pre>
+  </blockquote>
+
+  <h3 id="q38">Any way to make the toolbar buttons look more distinct?</h3>
+
+  <p>The Notepad2.ini file included in the Notepad2 zip file has some options to display text descriptions near the toolbar button images, or to use custom toolbar images. Requires a restart of Notepad2.</p>
+
+  <h3 id="q39">How to disable the large file warning message?</h3>
+
+  <p>The large file warning message dialog provides an option not to be displayed any more. Or you could adjust the size limit for when the warning is triggered: add the value <tt>FileLoadWarningMB</tt> to the <tt>[Settings2]</tt> section of the Notepad2 ini-file, and assign it the size in megabytes.</p>
+
+  <p>Notepad2 needs to keep the whole file in memory (to be able to perform syntax highlighting), and also requires additional memory to store undo history, perform encoding conversion on saving, etc. <em>That's why editing very big files can lead to memory exhaustion, and possible loss of data.</em></p>
+
+  <h3 id="q40">Why is there a security warning when running Notepad2?</h3>
+
+  <p>If the Notepad2 zip file is downloaded with Internet Explorer, the file is labeled to be insecure, as it origins from the web. Some unzip tools may also add this label for extracted files, and this may cause a security warning when running Notepad2.</p>
+
+  <p>To remove this warning message, right-click the Notepad2.exe file in Explorer, choose Properties from the context menu, and press the Unblock button at the bottom of the General tab. Confirm this action with the OK button.</p>
+
+  <h3 id="q41">Why are my program settings not saved at all?</h3>
+
+  <p><em>As of version 3.1, Notepad2 will no longer create a default ini-file in the program directory. If no existing ini-file is found, you need to manually save the settings (F7) the first time. From now, the program settings are saved to the newly created ini-file.</em></p>
+
+  <p>Furthermore, Notepad2 requires write access to the ini-file to be able to save the program settings. If settings are saved manually (F7), a warning message appears if the ini-file is write-protected. However, on exit, no warning is issued, as setting the read-only flag of the ini-file can be used to freeze the settings.</p>
+
+  <p>On Vista and above, Notepad2 is not allowed to write files inside the <tt>%PROGRAMFILES%</tt> directory tree, by default. You need to move the Notepad2.ini file to your <tt>%APPDATA%</tt> directory (type <tt>%APPDATA%</tt> into the Windows Explorer address bar to locate it), or manually edit the Notepad2.ini file inside the program directory (requires elevated privileges) and add the following text right at the top:</p>
+
+  <blockquote>
+    <pre>
+[Notepad2]
+Notepad2.ini=%APPDATA%\Notepad2.ini
+</pre>
+  </blockquote>
+
+  <p>This will move the Notepad2.ini file to your user profile directory.</p>
+
+  <h3 id="q42">Why are some settings not saved properly?</h3>
+
+  <p>As of version 3.0 and above, the Notepad2 settings are stored in Unicode format. If you are reusing your ini-file from previous versions, it is still encoded in your local system encoding. This causes some settings to be saved improperly (recent files with Unicode names, Unicode search strings, Unicode font names).</p>
+
+  <p>To fix this, open the Notepad2 ini-file (Ctrl+F7), convert it to Unicode (File, Encoding, Unicode), and save it.</p>
+
+  <p>You could also reuse your ini-file with the earlier non-Unicode encoding, this would save a few KB of disk space. But in this case, you won't be able to save Unicode data (items mentioned above).</p>
+
+  <p>A new ini-file is always created in Unicode format.</p>
+
+  <h3 id="q43">Where is the Notepad2 ini-file located?</h3>
+
+  <p>Notepad2 first tries to find the ini-file with the same name as the executable file, and then the file Notepad2.ini. The program directory is the primarily searched location, followed by the <tt>%APPDATA%</tt> folder, and then the directories specified by the <tt>%PATH%</tt> environment variable and the Windows directory.</p>
+
+  <p>By default, if no existing configuration file is found with the above rules, the ini-file location is set to the Notepad2 program directory, and the the name of the executable file is used. <em>However, the ini-file will only be created if the settings are saved manually (F7).</em></p>
+
+  <p>If a relative file name is specified on the command line as an alternative location of the ini-file, the same rules apply (use something like <tt>Notepad2.exe /f "%APPDATA%\MySettings.ini"</tt> to save the ini-file to a certain directory, or just <tt>Notepad2.exe /f "%APPDATA%"</tt>).</p>
+
+  <h3 id="q44">How to use separate ini-files for each user?</h3>
+
+  <p>To let each user on your system have his own Notepad2 configuration, create one central Notepad2.ini file (or an ini-file with the same name as the Notepad2 executable file), either in the Notepad2 program directory, or in the Windows directory (the latter method is preferred if multiple copies of the executable file are present on your system). Now insert something like the following configuration section into the central ini-file:</p>
+
+  <blockquote>
+    <pre>
+[Notepad2]
+Notepad2.ini=%WINDIR%\Notepad2-%USERNAME%.ini
+</pre>
+  </blockquote>
+
+  <p>This will create a separate file named <tt>Notepad2-userxy.ini</tt> in the Windows directory for each user. To have the ini-file stored in the user profile instead of the Windows directory, use something like this:</p>
+
+  <blockquote>
+    <pre>
+[Notepad2]
+Notepad2.ini=%APPDATA%\Notepad2.ini
+</pre>
+  </blockquote>
+
+  <p>If a relative pathname is specified, it is again searched with the rules outlined in the previous question.</p>
+
+  <h3 id="q45">How to import and export syntax scheme settings?</h3>
+
+  <p>The custom configuration of the syntax schemes can be imported and exported from the Customize Schemes dialog: just use the appropriate buttons if the dialog box is displayed (Ctrl+F12). Note that when settings are being imported, missing sections of the ini-file will be skipped and won't restore the default settings, so it's possible to import ini-files containing just selected scheme settings.</p>
+
+  <h3 id="q46">How to reset the Notepad2 notification messages?</h3>
+
+  <p>To bring back the notification messages suppressed with the "Don't display this message again" option, load the ini-file (Ctrl+F7) and delete all the values from the <tt>[Suppressed Messages]</tt> section.</p>
+
+  <p>To block the "Don't display this message again" option for an individual notification, set the value of the corresponding ini-option to <tt>2</tt>. For example, <tt>MsgNotFound=2</tt> ensures the "Text not found" notification message will always be displayed.</p>
+
+  <h3 id="q47">What about the [Settings2] section of the ini-file?</h3>
+
+  <p>You may have noticed that the Notepad2 ini-file has a configuration section named <tt>[Settings2]</tt>. This section offers some advanced Notepad2 program settings, and can only be edited manually. Press Ctrl+F7 to open the Notepad2 ini-file. Most changes only take effect upon restarting Notepad2.</p>
+
+  <dl>
+    <dt><tt>StickyWindowPosition</tt></dt>
+
+    <dt><tt>ReuseWindow</tt></dt>
+
+    <dt><tt>SingleFileInstance</tt></dt>
+
+    <dd><em>These items are managed by Notepad2.</em></dd>
+  </dl>
+
+  <dl>
+    <dt><tt>MultiFileArg</tt></dt>
+
+    <dd>Control if Notepad2 should allow multiple files on the command line (set to <tt>1</tt>). The default behaviour is to accept only a single file, without quoted spaces, like Windows Notepad (set to <tt>0</tt>). The command line switches <tt>+</tt> and <tt>-</tt> can be used to override this setting on the fly, and the <a href="notepad2-Replacement.html"><tt>/z</tt> switch</a> has the same effect as the <tt>-</tt> switch.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>RelativeFileMRU</tt></dt>
+
+    <dd>Set to <tt>0</tt> to disable recent files on the same drive or network share as Notepad2.exe being saved with relative pathnames. The default is <tt>1</tt> (enabled).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>PortableMyDocs</tt></dt>
+
+    <dd>If set to <tt>1</tt>, recent files and other path settings referring to the My Documents directory tree are stored relative to My Documents. This enhances USB stick portability between Windows XP and more recent versions of Windows, which are using different locations for My Documents. This setting has no effect if Notepad2.exe itself is located inside My Documents (or a subdirectory thereof). The default is <tt>1</tt> (enabled) if <tt>RelativeFileMRU</tt> is enabled, and <tt>0</tt> (disabled) otherwise.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>DefaultExtension</tt></dt>
+
+    <dd>Specify the default extension for saved files (omit the leading dot, just like <tt>txt</tt> or <tt>html</tt>).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>DefaultDirectory</tt></dt>
+
+    <dd>Specify the default directory for the open and save dialogs, used if no file is opened. Pathnames can be relative to the Notepad2 program directory.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>FileDlgFilters</tt></dt>
+
+    <dd>Specify filters for the open and save dialogs (Example: <tt>Text Files|*.txt;*.wtx;*.log;*.asc;*.doc;*.diz;*.nfo|All Files|*.*</tt>).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>FileCheckInverval</tt></dt>
+
+    <dd>The interval (in milliseconds) to check for external modification of the currently opened file. Defaults to 2000 ms.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>AutoReloadTimeout</tt></dt>
+
+    <dd>The timeout (in milliseconds) to wait before automatically reloading modified files. The default value of 2000 ms usually prevents read/write conflicts.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>FileLoadWarningMB</tt></dt>
+
+    <dd>The size limit, in megabytes, to display a warning message for large files. A value of <tt>0</tt> disables the warning.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>OpacityLevel</tt></dt>
+
+    <dd>Opacity level (in %) of the Notepad2 window in transparent mode.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>NoFadeHidden</tt></dt>
+
+    <dd>Set to <tt>1</tt> to disable fading of hidden objects in file lists (such as Favorites, etc.).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>ToolbarLook</tt></dt>
+
+    <dd>Determines the look of disabled toolbar buttons. <tt>0</tt> means system default (dark-grey and somewhat grainy on Windows Vista and Windows 7; not available on Windows 2000), <tt>1</tt> means colored and faded (the default from Notepad2 4.2.25 on Windows XP and above), and <tt>2</tt> means Windows XP-style light-grey (the default from Notepad2 4.2.25 on Windows 2000; looks better than the system default on Windows Vista and Windows 7).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>SimpleIndentGuides</tt></dt>
+
+    <dd>Set to <tt>1</tt> to prevent indentation guides from jumping across empty lines.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>NoHTMLGuess</tt></dt>
+
+    <dd>Set to <tt>1</tt> to disable simple HTML/XML detection for files without extensions.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>NoCGIGuess</tt></dt>
+
+    <dd>Set to <tt>1</tt> to disable simple language detection for cgi and fcgi files.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>NoFileVariables</tt></dt>
+
+    <dd>Set to <tt>1</tt> to disable <a href="#q28">file variable parsing</a>. Encoding tag parsing can be disabled in the File, Encoding, Default dialog box.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>filebrowser.exe</tt></dt>
+
+    <dd>Specify the path of an external program that is launched when pressing the Browse toolbar button. Defaults to metapath.exe, which is my file browser plugin (found in the <a href="http://www.flos-freeware.ch/archive.html">Project Archive</a>). You can specify additional command line switches, and the file currently opened in Notepad2 will be appended as the last command line parameter.<br />
+    <em>Note: Due to special treatment of quotes by the Win32 ini-file APIs, pathnames with spaces need to be quadruple-quoted (</em><tt>""path to/file.exe""</tt><em>), but only double-quoted if there's additional command line arguments (</em><tt>"path to/file.exe" /arg</tt><em>).</em></dd>
+  </dl>
+
+  <dl>
+    <dt><tt>DateTimeShort</tt></dt>
+
+    <dt><tt>DateTimeLong</tt></dt>
+
+    <dd>Specify the short/long date and time formats. This is the <tt>format</tt> parameter passed to the <tt><a href="http://msdn2.microsoft.com/en-us/library/fe06s4ak(VS.71).aspx">strftime()</a></tt> function. Note that the locale will be set to English (because of the English Visual C++ Runtime Library used by Notepad2).</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>TimeStamp</tt></dt>
+
+    <dd>Regular expression used to <a href="#q29">update timestamps</a>.</dd>
+  </dl>
+
+  <dl>
+    <dt><tt>WebTemplate1</tt></dt>
+
+    <dt><tt>WebTemplate2</tt></dt>
+
+    <dd><em>Undocumented. Dangerous.</em> <big>☺</big></dd>
+  </dl>
+
+  <dl>
+    <dt><tt>ShellAppUserModelID</tt></dt>
+
+    <dt><tt>ShellUseSystemMRU</tt></dt>
+
+    <dd>Control system MRU, taskbar and jump list behaviour. See <a href="http://www.flos-freeware.ch/doc/notepad2-Replacement.html">Replacing Windows Notepad</a> for detailed explanations.</dd>
+  </dl>
+
+  <h3 id="q48">Where are the translated versions of Notepad2?</h3>
+
+  <p>The expense of collecting, testing, packaging and hosting translated versions of Notepad2 was more than I felt happy with for my hobby project. Switching to a simple list of links was not much better: the many links to file sharing hosts appeared somewhat dubious, and they still had to be updated with each new release of the translated files.</p>
+
+  <p>Often I received e-mails with reported linguistic mistakes not being fixed by the authors, or several people competing for a translation to the same language.</p>
+
+  <p>That's why, for the time being, I have decided not to take care of translated versions of Notepad2, any longer. I may change my mind once I have more free time for my hobby project, or there may be someone else interested in operating a Notepad2 International website.</p>
+
+  <h3 id="q49">Am I allowed to ... ?</h3>
+
+  <ul>
+    <li>... use Notepad2 for private, educational, and commercial purpose?</li>
+
+    <li>... modify and translate Notepad2?</li>
+
+    <li>... redistribute Notepad2?</li>
+
+    <li>... bundle Notepad2 with my application?</li>
+  </ul>
+
+  <p>The answer to all the above question is: <em>Yes!</em> Notepad2 may be used freely for private, educational and commercial purpose. You are also allowed to modify or translate Notepad2 and redistribute your altered version, as long as the conditions outlined in the included License.txt file are granted.</p>
+
+  <p>Please do not charge any distribution fees for Notepad2.</p>
+
+  <p>I don't recommend bundling Notepad2 with other applications, as some users may prefer another text editor, and by providing a link to the Notepad2 website, you make sure people are always using the most recent version.</p>
+
+  <h3 id="q50">Why should I use the x64 build of Notepad2?</h3>
+
+  <p>Will it run faster? Theoretically, yes. Usually, 32-bit machine code is processed natively by the CPU on 64-bit Windows, but there's still the slight overhead of the WOW64 emulator. This difference probably doesn't matter at all in daily use.</p>
+
+  <p>Will it open larger files? No, the underlying Scintilla source code editing component internally works with 32-bit integers, so there's the same size limits for the 32-bit and the 64-bit builds.</p>
+
+  <p>Better system integration! The WOW64 File System Redirector may cause some trouble. There's <a href="http://msdn.microsoft.com/en-us/library/aa384187(v=vs.85).aspx">sophisticated rules</a> how access to system files is redirected for WOW64 applications, so there may be a few special cases where knowledge of these rules is required to be able to edit system files using the 32-bit version of Notepad2 on a 64-bit machine.</p>
+
+  <p>So why not temporarily disabling the WOW64 File System Redirector and make the 32-bit version of Notepad2 feel at home on 64-bit systems? Turning off the File System Redirector permanently is discouraged by Microsoft. Disabling it temporarily whenever a file is opened may work well for files only available in one of the %windir%\System32 or %windir%\SysWOW64 directories. But as far as I've seen there's no clear solution for the situation where a file is available in both the %windir%\System32 and %windir%\SysWOW64 directories. It's necessary anyway to use the non-ambiguous %windir%\Sysnative virtual directory to access 64-bit system files from 32-bit applications.</p>
+
+  <p>So, here's the summary:</p>
+
+  <p>Using the 32-bit build of Notepad2 is no problem on 64-bit systems, if working with files outside the system directories.</p>
+
+  <p>Access to 64-bit system files with the 32-bit version of Notepad2 should go though the %windir%\Sysnative virtual directory (this also works for the 32-bit version of metapath). Note that the File System Redirector skips some directories, including %windir%\system32\drivers\etc, the location of the famous hosts file.</p>
+
+  <p>If working on 64-bit system files regularly, or the setup tool is used perform registry-based replacement of the Windows Notepad, the 64-bit build of Notepad2 is preferred (that is, even required for the latter case).</p>
+
+  <h3 id="q51">How to use the Notepad2 Setup Tool to install and update Notepad2?</h3>
+
+  <p>The Notepad2 Setup Tool can be used to replace Windows Notepad with Notepad2, using a clean, unintrusive registry-based method (read about the <a href="notepad2-Replacement.html">technical details</a>).</p>
+
+  <p>The Windows Notepad can be restored by uninstalling Notepad2 from the Control Panel. Uninstalling will also remove the Notepad2 settings stored in <tt>%APPDATA%\Notepad2.ini</tt>, therefore backup this file manually if you'd like to keep the settings. Installing a newer version of Notepad2 will not overwrite existing settings.</p>
+
+  <p>The setup tool accepts the <tt>/QUIET</tt> (or equivalent <tt>/SILENT</tt>) and <tt>/EXTRACT</tt> command line switches. Note that QUIET mode does not suppress the UAC prompt. The switches also work as part of the filename, i.e. the setup tool can be renamed to "Notepad2-Install-Silent.exe" to always launch in QUIET mode.</p>
+
+  <p>To have Windows 7 jump lists work properly, Notepad2 windows are assigned to a custom <tt>AppUserModelID</tt> by the setup tool, that's why multiple icons may appear if Notepad2.exe is directly pinned to the taskbar. To fix this, open a new Notepad2 window first, and then pin it to the taskbar from the Notepad2 taskbar button context menu.</p>
+  <hr />
+
+  <address>
+    <small>© <a href="http://www.flos-freeware.ch">Florian Balmer</a> 1996-2011<br />
+    Page last modified: July 01, 2011</small>
+  </address>
+</body>
+</html>

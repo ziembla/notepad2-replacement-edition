@@ -52,6 +52,12 @@ HWND      hwndMain;
 HWND      hwndNextCBChain = NULL;
 HWND      hDlgFindReplace = NULL;
 
+
+HBITMAP   hBmpRecommendation;
+HBITMAP   hBmpRecommendationMask;
+BOOL      bRecommendationShown = FALSE;
+
+
 #define NUMTOOLBITMAPS  23
 #define NUMINITIALTOOLS 24
 
@@ -158,6 +164,11 @@ BOOL      bTransparentModeAvailable;
 BOOL      bShowToolbar;
 BOOL      bShowStatusbar;
 
+
+int       iRecommendationVisible;
+int       iFileSizeComputationLimit;
+
+
 typedef struct _wi
 {
   int x;
@@ -263,6 +274,69 @@ WCHAR     g_wchAppUserModelID[32] = L"";
 WCHAR     g_wchWorkingDirectory[MAX_PATH] = L"";
 
 
+#define BOOKMARK_EDITION
+#ifdef BOOKMARK_EDITION
+	//Graphics for bookmark indicator
+	/* XPM */
+	static char * bookmark_pixmap[] = {
+	"11 11 44 1",
+	" 	c #EBE9ED",
+	".	c #E5E3E7",
+	"+	c #767C6D",
+	"@	c #2A3120",
+	"#	c #1B2312",
+	"$	c #333B28",
+	"%	c #E3E1E5",
+	"&	c #D8D6DA",
+	"*	c #444D38",
+	"=	c #3F5C19",
+	"-	c #63AD00",
+	";	c #73C900",
+	">	c #64AF00",
+	",	c #3D5718",
+	"'	c #3E4634",
+	")	c #7B8172",
+	"!	c #42601A",
+	"~	c #74CB00",
+	"{	c #71C600",
+	"]	c #3A5317",
+	"^	c #707668",
+	"/	c #3F4931",
+	"(	c #262C1D",
+	"_	c #2F3A1E",
+	":	c #72C700",
+	"<	c #74CA00",
+	"[	c #0E1109",
+	"}	c #3C462F",
+	"|	c #62AC00",
+	"1	c #21271A",
+	"2	c #7A8071",
+	"3	c #405D19",
+	"4	c #3D5A18",
+	"5	c #D9D7DB",
+	"6	c #4E5841",
+	"7	c #72C800",
+	"8	c #63AC00",
+	"9	c #3F5B19",
+	"0	c #3D4533",
+	"a	c #DFDDE0",
+	"b	c #353E29",
+	"c	c #29331B",
+	"d	c #7B8272",
+	"e	c #DDDBDF",
+	"           ",
+	"  .+@#$+%  ",
+	" &*=-;>,'  ",
+	" )!~~~~{]^ ",
+	" /-~~~~~>( ",
+	" _:~~~~~<[ ",
+	" }|~~~~~|1 ",
+	" 23~~~~;4+ ",
+	" 56=|7890  ",
+	"  a2bc}de  ",
+	"           "};
+#endif
+
 
 //=============================================================================
 //
@@ -297,6 +371,8 @@ int flagUseSystemMRU       = 0;
 int flagRelaunchElevated   = 0;
 int flagDisplayHelp        = 0;
 
+
+int flagNotepadReplacement = 0;
 
 
 //=============================================================================
@@ -360,6 +436,12 @@ int WINAPI WinMain(HINSTANCE hInstance,HINSTANCE hPrevInst,LPSTR lpCmdLine,int n
   TestIniFile();
   CreateIniFile();
   LoadFlags();
+
+
+  // Notepad Replacement Command
+  if (flagNotepadReplacement)
+    return(0);
+
 
   // set AppUserModelID
   PrivateSetCurrentProcessExplicitAppUserModelID(g_wchAppUserModelID);
@@ -750,6 +832,17 @@ HWND InitInstance(HINSTANCE hInstance,LPSTR pszCmdLine,int nCmdShow)
 
   UpdateToolbar();
   UpdateStatusbar();
+
+
+  hBmpRecommendation = (HBITMAP)LoadImage(hInstance, MAKEINTRESOURCE(IDB_WZ_RECOMMEND), IMAGE_BITMAP, 0, 0, LR_SHARED);//LR_LOADTRANSPARENT | LR_LOADMAP3DCOLORS | 
+  hBmpRecommendationMask = (HBITMAP)LoadImage(hInstance, MAKEINTRESOURCE(IDB_WZ_RECOMMEND_MASK), IMAGE_BITMAP, 0, 0, LR_SHARED);//LR_LOADTRANSPARENT | LR_LOADMAP3DCOLORS | 
+
+  {
+    BOOL bShowRecommendation = iRecommendationVisible != 0;
+    SendMessage(hwndEdit, SCI_SETWATERMARK, bShowRecommendation ? hBmpRecommendation : 0, bShowRecommendation ? hBmpRecommendationMask : 0);
+    bRecommendationShown = bShowRecommendation;
+  }
+
 
   return(hwndMain);
 
@@ -1751,7 +1844,7 @@ void MsgSize(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
   // Statusbar width
   aWidth[0] = max(120,min(cx/3,StatusCalcPaneWidth(hwndStatus,L"Ln 9'999'999 : 9'999'999   Col 9'999'999 : 999   Sel 9'999'999")));
-  aWidth[1] = aWidth[0] + StatusCalcPaneWidth(hwndStatus,L"9'999'999 Bytes");
+  aWidth[1] = aWidth[0] + StatusCalcPaneWidth(hwndStatus,L"±9'999'999 Bytes");
   aWidth[2] = aWidth[1] + StatusCalcPaneWidth(hwndStatus,L"Unicode BE BOM");
   aWidth[3] = aWidth[2] + StatusCalcPaneWidth(hwndStatus,L"CR+LF");
   aWidth[4] = aWidth[3] + StatusCalcPaneWidth(hwndStatus,L"OVR");
@@ -1780,6 +1873,11 @@ void MsgInitMenu(HWND hwnd,WPARAM wParam,LPARAM lParam)
   EnableCmd(hmenu,IDM_FILE_LAUNCH,i);
   EnableCmd(hmenu,IDM_FILE_PROPERTIES,i);
   EnableCmd(hmenu,IDM_FILE_CREATELINK,i);
+
+
+  EnableCmd(hmenu,IDM_FILE_COPYPATHNAME,i);
+
+
   EnableCmd(hmenu,IDM_FILE_ADDTOFAV,i);
 
   EnableCmd(hmenu,IDM_FILE_READONLY,i);
@@ -3336,6 +3434,113 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
 
+#ifdef BOOKMARK_EDITION
+	// Main Bookmark Functions
+	//case IDM_EDIT_BOOKMARKNEXT:
+	case BME_EDIT_BOOKMARKNEXT:
+	{
+		int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+		int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+		int bitmask = 1;
+		int iNextLine = SendMessage( hwndEdit , SCI_MARKERNEXT , iLine+1 , bitmask );
+		if( iNextLine == -1 )
+		{
+			iNextLine = SendMessage( hwndEdit , SCI_MARKERNEXT , 0 , bitmask );
+		}
+
+		if( iNextLine != -1 )
+		{
+			SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
+			SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
+			SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+		}
+		break;
+	}
+
+	//case IMD_EDIT_BOOKMARKPREV:
+	case BME_EDIT_BOOKMARKPREV:
+	{
+		int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+		int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+		int bitmask = 1;
+		int iNextLine = SendMessage( hwndEdit , SCI_MARKERPREVIOUS , iLine-1 , bitmask );
+		if( iNextLine == -1 )
+		{
+			int nLines = SendMessage( hwndEdit , SCI_GETLINECOUNT , 0 , 0 );
+			iNextLine = SendMessage( hwndEdit , SCI_MARKERPREVIOUS , nLines , bitmask );
+		}
+		
+		if( iNextLine != -1 )
+		{
+			SendMessage( hwndEdit , SCI_GOTOLINE , iNextLine , 0 );
+			SendMessage( hwndEdit , SCI_SETYCARETPOLICY , CARET_SLOP|CARET_STRICT|CARET_EVEN , 10 );
+			SendMessage( hwndEdit , SCI_SCROLLCARET , 0 , 0 );
+		}
+
+		break;
+	}
+
+	//case IDM_EDIT_BOOKMARKTOGGLE:
+	case BME_EDIT_BOOKMARKTOGGLE:
+	{
+		int iPos = SendMessage( hwndEdit , SCI_GETCURRENTPOS , 0 , 0);
+		int iLine = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iPos , 0 );
+
+		BOOL bAnyBefore = SendMessage( hwndEdit , SCI_MARKERNEXT , 0 , 1 ) > -1;
+		BOOL bAnyAfter;
+
+		int bitmask = SendMessage( hwndEdit , SCI_MARKERGET , iLine , 0 );
+		if( bitmask & 1 )
+		{
+			// unset
+			SendMessage( hwndEdit , SCI_MARKERDELETE , iLine , 0 );
+		}
+		else
+		{
+			// define (behöver bara göra detta en gång egentligen)
+			//SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 74 | (203 << 8) | (0 << 16) ); //behöver bara göra detta en gång egentligen
+			//SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_ARROWS );	//behöver bara göra detta en gång egentligen
+
+			//if( bShowSelectionMargin )
+			//{
+			//	SendMessage( hwndEdit , SCI_MARKERDEFINEPIXMAP , 0 , (LPARAM)bookmark_pixmap );
+			//}
+			//else
+			//{
+			//	SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 216 | (255 << 8) | (216 << 16) );
+			//	SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );
+			//}
+
+			
+			//SendMessage( hwndEdit , SCI_MARKERSETBACK , 0 , 180 | (255 << 8) | (180 << 16) ); //behöver bara göra detta en gång egentligen
+			//SendMessage( hwndEdit , SCI_MARKERDEFINE , 0 , SC_MARK_BACKGROUND );	//behöver bara göra detta en gång egentligen
+
+			// set
+			SendMessage( hwndEdit , SCI_MARKERADD , iLine , 0 );
+			//SendMessage( hwndEdit , SCI_MARKERADD , iLine , 1 );
+		}
+
+		bAnyAfter = SendMessage( hwndEdit , SCI_MARKERNEXT , 0 , 1 ) > -1;
+		if (bAnyBefore != bAnyAfter)
+			ShowSelectionMargin();
+
+		break;
+	}
+
+	//case IDM_EDIT_BOOKMARKCLEAR:
+	case BME_EDIT_BOOKMARKCLEAR:
+	{
+		SendMessage( hwndEdit , SCI_MARKERDELETEALL , -1 , 0 );
+
+		ShowSelectionMargin();
+
+		break;
+	}
+#endif
+
+
     case IDM_EDIT_GOTOLINE:
       EditLinenumDlg(hwndEdit);
       break;
@@ -3504,7 +3709,12 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
 
     case IDM_VIEW_MARGIN:
       bShowSelectionMargin = (bShowSelectionMargin) ? FALSE : TRUE;
-      SendMessage(hwndEdit,SCI_SETMARGINWIDTHN,1,(bShowSelectionMargin)?16:0);
+      //SendMessage(hwndEdit,SCI_SETMARGINWIDTHN,1,(bShowSelectionMargin)?16:0);
+
+
+      ShowSelectionMargin();
+
+
       break;
 
 
@@ -4280,7 +4490,13 @@ LRESULT MsgCommand(HWND hwnd,WPARAM wParam,LPARAM lParam)
       break;
 
 
-    case CMD_COPYPATHNAME: {
+    case CMD_COPYPATHNAME:
+
+
+    case IDM_FILE_COPYPATHNAME:
+
+
+      {
 
         WCHAR *pszCopy;
         WCHAR tchUntitled[32];
@@ -4647,6 +4863,25 @@ LRESULT MsgNotify(HWND hwnd,WPARAM wParam,LPARAM lParam)
               //int iLineLength = (int)SendMessage(hwndEdit,SCI_LINELENGTH,iCurLine,0);
               //int iIndentBefore = (int)SendMessage(hwndEdit,SCI_GETLINEINDENTATION,(WPARAM)iCurLine-1,0);
 
+
+#ifdef BOOKMARK_EDITION
+							// Move bookmark along with line if inserting lines (pressing return at beginning of line) because Scintilla does not do this for us
+							if( iCurLine > 0 )
+							{
+								int iPrevLineLength = SendMessage(hwndEdit,SCI_GETLINEENDPOSITION,iCurLine-1,0) - SendMessage(hwndEdit,SCI_POSITIONFROMLINE,iCurLine-1,0)  ;
+								if( iPrevLineLength == 0 )
+								{
+									int bitmask = SendMessage( hwndEdit , SCI_MARKERGET , iCurLine-1 , 0 );
+									if( bitmask & 1 )
+									{
+										SendMessage( hwndEdit , SCI_MARKERDELETE , iCurLine-1 , 0 );
+										SendMessage( hwndEdit , SCI_MARKERADD , iCurLine , 0 );
+									}
+								}
+							}
+#endif
+
+
               if (iCurLine > 0/* && iLineLength <= 2*/)
               {
                 int iPrevLineLength = (int)SendMessage(hwndEdit,SCI_LINELENGTH,iCurLine-1,0);
@@ -4919,15 +5154,15 @@ void LoadSettings()
   LoadIniSection(L"Settings",pIniSection,cchIniSection);
 
   bSaveSettings =
-    IniSectionGetInt(pIniSection,L"SaveSettings",1);
+    IniSectionGetInt(pIniSection,L"SaveSettings",0);//1);
   if (bSaveSettings) bSaveSettings = 1;
 
   bSaveRecentFiles =
-    IniSectionGetInt(pIniSection,L"SaveRecentFiles",0);
+    IniSectionGetInt(pIniSection,L"SaveRecentFiles",1);//0);
   if (bSaveRecentFiles) bSaveRecentFiles = 1;
 
   bSaveFindReplace =
-    IniSectionGetInt(pIniSection,L"SaveFindReplace",0);
+    IniSectionGetInt(pIniSection,L"SaveFindReplace",1);//0);
   if (bSaveFindReplace) bSaveFindReplace = 1;
 
   efrData.bFindClose = IniSectionGetInt(pIniSection,L"CloseFind",0);
@@ -4951,7 +5186,7 @@ void LoadSettings()
   else
     PathAbsoluteFromApp(tchFavoritesDir,NULL,COUNTOF(tchFavoritesDir),TRUE);
 
-  iPathNameFormat = IniSectionGetInt(pIniSection,L"PathNameFormat",0);
+  iPathNameFormat = IniSectionGetInt(pIniSection,L"PathNameFormat",1);//0);
   iPathNameFormat = max(min(iPathNameFormat,2),0);
 
   fWordWrap = IniSectionGetInt(pIniSection,L"WordWrap",0);
@@ -4964,16 +5199,16 @@ void LoadSettings()
   iWordWrapIndent = IniSectionGetInt(pIniSection,L"WordWrapIndent",0);
   iWordWrapIndent = max(min(iWordWrapIndent,6),0);
 
-  iWordWrapSymbols = IniSectionGetInt(pIniSection,L"WordWrapSymbols",22);
+  iWordWrapSymbols = IniSectionGetInt(pIniSection,L"WordWrapSymbols",2);//22);
   iWordWrapSymbols = max(min(iWordWrapSymbols%10,2),0)+max(min((iWordWrapSymbols%100-iWordWrapSymbols%10)/10,2),0)*10;
 
-  bShowWordWrapSymbols = IniSectionGetInt(pIniSection,L"ShowWordWrapSymbols",0);
+  bShowWordWrapSymbols = IniSectionGetInt(pIniSection,L"ShowWordWrapSymbols",1);//0);
   if (bShowWordWrapSymbols) bShowWordWrapSymbols = 1;
 
   bMatchBraces = IniSectionGetInt(pIniSection,L"MatchBraces",1);
   if (bMatchBraces) bMatchBraces = 1;
 
-  bAutoCloseTags = IniSectionGetInt(pIniSection,L"AutoCloseTags",0);
+  bAutoCloseTags = IniSectionGetInt(pIniSection,L"AutoCloseTags",0);//1);//0);
   if (bAutoCloseTags) bAutoCloseTags = 1;
 
   bHiliteCurrentLine = IniSectionGetInt(pIniSection,L"HighlightCurrentLine",0);
@@ -4982,7 +5217,7 @@ void LoadSettings()
   bAutoIndent = IniSectionGetInt(pIniSection,L"AutoIndent",1);
   if (bAutoIndent) bAutoIndent = 1;
 
-  bShowIndentGuides = IniSectionGetInt(pIniSection,L"ShowIndentGuides",0);
+  bShowIndentGuides = IniSectionGetInt(pIniSection,L"ShowIndentGuides",1);//0);
   if (bShowIndentGuides) bShowIndentGuides = 1;
 
   bTabsAsSpaces = IniSectionGetInt(pIniSection,L"TabsAsSpaces",1);
@@ -4996,7 +5231,7 @@ void LoadSettings()
   bBackspaceUnindents = IniSectionGetInt(pIniSection,L"BackspaceUnindents",0);
   if (bBackspaceUnindents) bBackspaceUnindents = 1;
 
-  iTabWidth = IniSectionGetInt(pIniSection,L"TabWidth",2);
+  iTabWidth = IniSectionGetInt(pIniSection,L"TabWidth",4);//2);
   iTabWidth = max(min(iTabWidth,256),1);
   iTabWidthG = iTabWidth;
 
@@ -5004,7 +5239,7 @@ void LoadSettings()
   iIndentWidth = max(min(iIndentWidth,256),0);
   iIndentWidthG = iIndentWidth;
 
-  bMarkLongLines = IniSectionGetInt(pIniSection,L"MarkLongLines",0);
+  bMarkLongLines = IniSectionGetInt(pIniSection,L"MarkLongLines",1);//0);
   if (bMarkLongLines) bMarkLongLines = 1;
 
   iLongLinesLimit = IniSectionGetInt(pIniSection,L"LongLinesLimit",72);
@@ -5014,13 +5249,13 @@ void LoadSettings()
   iLongLineMode = IniSectionGetInt(pIniSection,L"LongLineMode",EDGE_LINE);
   iLongLineMode = max(min(iLongLineMode,EDGE_BACKGROUND),EDGE_LINE);
 
-  bShowSelectionMargin = IniSectionGetInt(pIniSection,L"ShowSelectionMargin",0);
+  bShowSelectionMargin = IniSectionGetInt(pIniSection,L"ShowSelectionMargin",0);//,1);//0);
   if (bShowSelectionMargin) bShowSelectionMargin = 1;
 
   bShowLineNumbers = IniSectionGetInt(pIniSection,L"ShowLineNumbers",1);
   if (bShowLineNumbers) bShowLineNumbers = 1;
 
-  bViewWhiteSpace = IniSectionGetInt(pIniSection,L"ViewWhiteSpace",0);
+  bViewWhiteSpace = IniSectionGetInt(pIniSection,L"ViewWhiteSpace",1);//0);
   if (bViewWhiteSpace) bViewWhiteSpace = 1;
 
   bViewEOLs = IniSectionGetInt(pIniSection,L"ViewEOLs",0);
@@ -5057,19 +5292,19 @@ void LoadSettings()
   iPrintColor = IniSectionGetInt(pIniSection,L"PrintColorMode",3);
   iPrintColor = max(min(iPrintColor,4),0);
 
-  iPrintZoom = IniSectionGetInt(pIniSection,L"PrintZoom",10)-10;
+  iPrintZoom = IniSectionGetInt(pIniSection,L"PrintZoom",7)-10;//10)-10;
   iPrintZoom = max(min(iPrintZoom,20),-10);
 
-  pagesetupMargin.left = IniSectionGetInt(pIniSection,L"PrintMarginLeft",-1);
+  pagesetupMargin.left = IniSectionGetInt(pIniSection,L"PrintMarginLeft",1200);//-1);
   pagesetupMargin.left = max(pagesetupMargin.left,-1);
 
-  pagesetupMargin.top = IniSectionGetInt(pIniSection,L"PrintMarginTop",-1);
+  pagesetupMargin.top = IniSectionGetInt(pIniSection,L"PrintMarginTop",1200);//-1);
   pagesetupMargin.top = max(pagesetupMargin.top,-1);
 
-  pagesetupMargin.right = IniSectionGetInt(pIniSection,L"PrintMarginRight",-1);
+  pagesetupMargin.right = IniSectionGetInt(pIniSection,L"PrintMarginRight",1200);//-1);
   pagesetupMargin.right = max(pagesetupMargin.right,-1);
 
-  pagesetupMargin.bottom = IniSectionGetInt(pIniSection,L"PrintMarginBottom",-1);
+  pagesetupMargin.bottom = IniSectionGetInt(pIniSection,L"PrintMarginBottom",1200);//-1);
   pagesetupMargin.bottom = max(pagesetupMargin.bottom,-1);
 
   bSaveBeforeRunningTools = IniSectionGetInt(pIniSection,L"SaveBeforeRunningTools",0);
@@ -5097,7 +5332,7 @@ void LoadSettings()
   bTransparentModeAvailable =
     (GetProcAddress(GetModuleHandle(L"User32"),"SetLayeredWindowAttributes") != NULL);
 
-  IniSectionGetString(pIniSection,L"ToolbarButtons",L"",
+  IniSectionGetString(pIniSection,L"ToolbarButtons",L"1 2 3 4 19 0 5 6 0 7 8 9 0 10 11 0 12 0 13 14 0 15 0 22 23",//L"",
     tchToolbarButtons,COUNTOF(tchToolbarButtons));
 
   bShowToolbar = IniSectionGetInt(pIniSection,L"ShowToolbar",1);
@@ -5109,13 +5344,13 @@ void LoadSettings()
   cxEncodingDlg = IniSectionGetInt(pIniSection,L"EncodingDlgSizeX",256);
   cxEncodingDlg = max(cxEncodingDlg,0);
 
-  cyEncodingDlg = IniSectionGetInt(pIniSection,L"EncodingDlgSizeY",262);
+  cyEncodingDlg = IniSectionGetInt(pIniSection,L"EncodingDlgSizeY",460);//262);
   cyEncodingDlg = max(cyEncodingDlg,0);
 
   cxRecodeDlg = IniSectionGetInt(pIniSection,L"RecodeDlgSizeX",256);
   cxRecodeDlg = max(cxRecodeDlg,0);
 
-  cyRecodeDlg = IniSectionGetInt(pIniSection,L"RecodeDlgSizeY",262);
+  cyRecodeDlg = IniSectionGetInt(pIniSection,L"RecodeDlgSizeY",403);//,262);
   cyRecodeDlg = max(cyRecodeDlg,0);
 
   cxFileMRUDlg = IniSectionGetInt(pIniSection,L"FileMRUDlgSizeX",412);
@@ -5138,6 +5373,11 @@ void LoadSettings()
 
   xFindReplaceDlg = IniSectionGetInt(pIniSection,L"FindReplaceDlgPosX",0);
   yFindReplaceDlg = IniSectionGetInt(pIniSection,L"FindReplaceDlgPosY",0);
+
+
+  iRecommendationVisible = IniSectionGetInt(pIniSection,L"RecommendationVisible", 1);
+  iFileSizeComputationLimit = IniSectionGetInt(pIniSection,L"FileSizeComputationLimit", 20000);
+
 
   LoadIniSection(L"Settings2",pIniSection,cchIniSection);
 
@@ -5307,6 +5547,11 @@ void SaveSettings(BOOL bSaveSettingsNow)
   IniSectionSetInt(pIniSection,L"FavoritesDlgSizeY",cyFavoritesDlg);
   IniSectionSetInt(pIniSection,L"FindReplaceDlgPosX",xFindReplaceDlg);
   IniSectionSetInt(pIniSection,L"FindReplaceDlgPosY",yFindReplaceDlg);
+
+
+  IniSectionSetInt(pIniSection,L"RecommendationVisible",iRecommendationVisible);
+  if (20000 != iFileSizeComputationLimit) IniSectionSetInt(pIniSection,L"FileSizeComputationLimit",iFileSizeComputationLimit);
+
 
   SaveIniSection(L"Settings",pIniSection);
   LocalFree(pIniSection);
@@ -5677,9 +5922,24 @@ void ParseCommandLine()
           break;
 
         case L'Z':
-          ExtractFirstArgument(lp2,lp1,lp2);
-          flagMultiFileArg = 1;
-          bIsNotepadReplacement = TRUE;
+          if (1 == lstrlen(lp1))
+          {
+            ExtractFirstArgument(lp2,lp1,lp2);
+            flagMultiFileArg = 1;
+            bIsNotepadReplacement = TRUE;
+          }
+          else
+          {
+            flagNotepadReplacement = 1;
+            if (L'E' == *CharUpper(lp1 + 1))
+            {
+              NotepadReplacement_SetMapping(TRUE, TRUE);
+            }
+            else if (L'D' == *CharUpper(lp1 + 1))
+            {
+              NotepadReplacement_SetMapping(FALSE, TRUE);
+            }
+          }
           break;
 
         case L'?':
@@ -5759,7 +6019,7 @@ void LoadFlags()
     if (!IniSectionGetInt(pIniSection,L"ReuseWindow",0))
       flagNoReuseWindow = 1;
 
-    if (IniSectionGetInt(pIniSection,L"SingleFileInstance",0))
+    if (IniSectionGetInt(pIniSection,L"SingleFileInstance",1))//0))
       flagSingleFileInstance = 1;
   }
 
@@ -5834,10 +6094,10 @@ int CheckIniFile(LPWSTR lpszFile,LPCWSTR lpszModule)
       }
     }
     // general
-    if (SearchPath(NULL,tchFileExpanded,NULL,COUNTOF(tchBuild),tchBuild,NULL)) {
-      lstrcpy(lpszFile,tchBuild);
-      return(1);
-    }
+    //if (SearchPath(NULL,tchFileExpanded,NULL,COUNTOF(tchBuild),tchBuild,NULL)) {
+    //  lstrcpy(lpszFile,tchBuild);
+    //  return(1);
+    //}
   }
 
   else if (PathFileExists(tchFileExpanded)) {
@@ -6063,6 +6323,18 @@ void UpdateStatusbar()
   WCHAR tchOvrMode[32];
   WCHAR tchLexerName[128];
 
+
+#ifdef BOOKMARK_EDITION
+	int iSelStart;
+	int iSelEnd;
+	int iLineStart;
+	int iLineEnd;
+	int iStartOfLinePos;
+	int iLinesSelected;
+	WCHAR tchLinesSelected[32];
+#endif
+
+
   if (!bShowStatusbar)
     return;
 
@@ -6094,15 +6366,83 @@ void UpdateStatusbar()
   else
     lstrcpy(tchSel,L"--");
 
+
+#ifdef BOOKMARK_EDITION
+	// Print number of lines selected lines in statusbar
+	iSelStart = SendMessage( hwndEdit , SCI_GETSELECTIONSTART , 0 , 0 );
+	iSelEnd = SendMessage( hwndEdit , SCI_GETSELECTIONEND , 0 , 0 );
+	iLineStart = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iSelStart , 0 );
+	iLineEnd = SendMessage( hwndEdit , SCI_LINEFROMPOSITION , iSelEnd , 0 );
+	iStartOfLinePos = SendMessage( hwndEdit , SCI_POSITIONFROMLINE , iLineEnd , 0 );
+	iLinesSelected = iLineEnd - iLineStart;
+	if( iSelStart != iSelEnd  &&  iStartOfLinePos != iSelEnd ) iLinesSelected += 1;
+	wsprintf(tchLinesSelected,L"%i",iLinesSelected);
+	FormatNumberStr(tchLinesSelected);
+
+	if (!bMarkLongLines)
+		FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel,tchLinesSelected);
+	else
+		FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel,tchLinesSelected);
+#else
   if (!bMarkLongLines)
     FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS,tchLn,tchLines,tchCol,tchSel);
   else
     FormatString(tchDocPos,COUNTOF(tchDocPos),IDS_DOCPOS2,tchLn,tchLines,tchCol,tchCols,tchSel);
+#endif
+
 
   iBytes = (int)SendMessage(hwndEdit,SCI_GETLENGTH,0,0);
-  StrFormatByteSize(iBytes,tchBytes,COUNTOF(tchBytes));
+  //StrFormatByteSize(iBytes,tchBytes,COUNTOF(tchBytes));
+  //FormatString(tchDocSize,COUNTOF(tchDocSize),IDS_DOCSIZE,tchBytes);
+  {
+    BOOL bSizeExact = mEncoding[iEncoding].uFlags & NCP_UTF8 || mEncoding[iEncoding].uFlags & NCP_DEFAULT || 0 == iBytes;
 
-  FormatString(tchDocSize,COUNTOF(tchDocSize),IDS_DOCSIZE,tchBytes);
+    if (!bSizeExact && iBytes <= iFileSizeComputationLimit)
+    {
+      char* lpData;
+      DWORD cbData;
+      
+      cbData = SendMessage(hwndEdit,SCI_GETLENGTH,0,0);
+      lpData = GlobalAlloc(GPTR,cbData + 1);
+      SendMessage(hwndEdit,SCI_GETTEXT,GlobalSize(lpData),(LPARAM)lpData);
+
+      if (mEncoding[iEncoding].uFlags & NCP_UNICODE)
+      {
+        LPWSTR lpDataWide;
+        int    cbDataWide;
+        lpDataWide = GlobalAlloc(GPTR,cbData * 2 + 16);
+        cbDataWide = MultiByteToWideChar(CP_UTF8,0,lpData,cbData,lpDataWide,GlobalSize(lpDataWide)/sizeof(WCHAR));
+        iBytes = cbDataWide * sizeof(WCHAR);
+        GlobalFree(lpDataWide);
+        bSizeExact = TRUE;
+      }
+      else if (mEncoding[iEncoding].uFlags & NCP_8BIT)
+      {
+        UINT uCodePage = mEncoding[iEncoding].uCodePage;
+        LPWSTR lpDataWide = GlobalAlloc(GPTR,cbData * 2 + 16);
+        int cbDataWide = MultiByteToWideChar(CP_UTF8,0,lpData,cbData,lpDataWide,GlobalSize(lpDataWide)/sizeof(WCHAR));
+        if (uCodePage == CP_UTF7 || uCodePage == 54936) {
+          GlobalFree(lpData);
+          lpData = GlobalAlloc(GPTR,GlobalSize(lpDataWide)*2);
+        }
+        cbData = WideCharToMultiByte(uCodePage,0,lpDataWide,cbDataWide,lpData,GlobalSize(lpData),NULL,NULL);
+        iBytes = cbData;
+        GlobalFree(lpDataWide);
+        bSizeExact = TRUE;
+      }
+      
+      GlobalFree(lpData);
+    }
+
+    if (mEncoding[iEncoding].uFlags & NCP_UTF8_SIGN)
+      iBytes += 3;
+    if (mEncoding[iEncoding].uFlags & NCP_UNICODE_BOM)
+      iBytes += 2;
+
+    StrFormatByteSize(iBytes,tchBytes,COUNTOF(tchBytes));
+
+    FormatString(tchDocSize, COUNTOF(tchDocSize), bSizeExact ? IDS_DOCSIZE : IDS_DOCSIZE_ESTIMATED, tchBytes);
+  }
 
   Encoding_GetLabel(iEncoding);
 
@@ -6128,6 +6468,16 @@ void UpdateStatusbar()
   StatusSetText(hwndStatus,STATUS_LEXER,tchLexerName);
 
   //InvalidateRect(hwndStatus,NULL,TRUE);
+
+
+  iBytes = SendMessage(hwndEdit,SCI_GETLENGTH,0,0);
+  {
+    BOOL bShowRecommendation = iRecommendationVisible < 0 || iRecommendationVisible > 0 && iBytes < iRecommendationVisible;
+    if (bShowRecommendation != bRecommendationShown)
+      SendMessage(hwndEdit, SCI_SETWATERMARK, bShowRecommendation ? hBmpRecommendation : 0, bShowRecommendation ? hBmpRecommendationMask : 0);
+    bRecommendationShown = bShowRecommendation;
+  }
+
 
 }
 
@@ -7273,6 +7623,234 @@ void CALLBACK PasteBoardTimer(HWND hwnd,UINT uMsg,UINT_PTR idEvent,DWORD dwTime)
   }
 }
 
+
+//=============================================================================
+//
+//  NotepadReplacement_IsEnabled
+//
+//
+BOOL NotepadReplacement_IsEnabled()
+{
+  WCHAR n2path[1024];
+  WCHAR debuggerN2[1024];
+  HKEY key;
+  LSTATUS status;
+  DWORD type;
+  WCHAR debuggerReg[1024];
+  DWORD debuggerRegLen = COUNTOF(debuggerReg);
+  BOOL bEnabled;
+
+  GetModuleFileName(NULL, n2path, COUNTOF(n2path));
+  wsprintf(debuggerN2,L"\"%s\" /z",n2path);
+
+  status = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\notepad.exe", 0, KEY_READ, &key);
+  if (ERROR_SUCCESS != status)
+    return FALSE;
+  status = RegQueryValueEx(key, L"Debugger", NULL, &type, (LPBYTE)debuggerReg, &debuggerRegLen);
+  RegCloseKey(key);
+  if (ERROR_SUCCESS != status || REG_SZ != type)
+    return FALSE;
+  bEnabled = 0 == lstrcmpi(debuggerReg, debuggerN2);
+
+  //if (bEnabled && Is64Bit())
+  //{
+  //  status = RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\notepad.exe", 0, KEY_READ, &key);
+  //  if (ERROR_SUCCESS != status)
+  //    return FALSE;
+  //  status = RegQueryValueEx(key, L"Debugger", NULL, &type, (LPBYTE)debuggerReg, &debuggerRegLen);
+  //  RegCloseKey(key);
+  //  if (ERROR_SUCCESS != status || REG_SZ != type)
+  //    return FALSE;
+  //  bEnabled = 0 == lstrcmpi(debuggerReg, debuggerN2);
+  //}
+
+  return bEnabled;
+}
+
+
+//=============================================================================
+//
+//  NotepadReplacement_ExecuteChange
+//
+//
+void NotepadReplacement_ExecuteChange()
+{
+  BOOL enable = !NotepadReplacement_IsEnabled();
+
+  BOOL ok = NotepadReplacement_SetMapping(enable, !IsVista());
+  if (!ok && IsVista()) // elevation is needed
+  {
+    WCHAR n2path[1024];
+    PCWSTR option;
+
+    GetModuleFileName(NULL, n2path, COUNTOF(n2path));
+    option = enable ? L"/zE" : L"/zD";
+
+    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+    ShellExecute(NULL, L"runas", n2path, option, NULL, SW_SHOWNORMAL);
+  }
+}
+
+
+//=============================================================================
+//
+//  NotepadReplacement_SetMapping
+//
+//
+BOOL NotepadReplacement_SetMapping(BOOL enabled, BOOL showErrorMessage)
+{
+  WCHAR n2path[1024];
+  WCHAR debuggerN2[1024];
+  HKEY key;
+  DWORD disposition;
+  LSTATUS status;
+  BOOL bOK;
+
+  if (enabled)
+  {
+      GetModuleFileName(NULL, n2path, COUNTOF(n2path));
+      wsprintf(debuggerN2,L"\"%s\" /z",n2path);
+  }
+
+  status = RegCreateKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\notepad.exe", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &key, &disposition);
+  bOK = ERROR_SUCCESS == status;
+
+  if (bOK)
+  {
+    status = enabled
+      ? RegSetValueEx(key, L"Debugger", 0, REG_SZ, debuggerN2, lstrlen(debuggerN2) * sizeof(WCHAR))
+      : RegDeleteValue(key, L"Debugger");
+    RegCloseKey(key);
+    bOK = ERROR_SUCCESS == status;
+
+    //if (bOK && Is64Bit())
+    //{
+    //  status = RegCreateKeyEx(HKEY_LOCAL_MACHINE, L"SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\notepad.exe", 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &key, &disposition);
+    //  bOK = ERROR_SUCCESS == status;
+
+    //  if (bOK)
+    //  {
+    //    status = enabled
+    //      ? RegSetValueEx(key, L"Debugger", 0, REG_SZ, debuggerN2, lstrlen(debuggerN2) * sizeof(WCHAR))
+    //      : RegDeleteValue(key, L"Debugger");
+    //    RegCloseKey(key);
+    //    bOK = ERROR_SUCCESS == status;
+    //  }
+    //}
+  }
+
+  if (bOK)
+    MsgBox(MBINFO, enabled ? IDS_NOTEPADREPLACEMENTOK : IDS_NOTEPADREPLACEMENTOFF);
+  else if (showErrorMessage)
+    MsgBox(MBINFO, IDS_NOTEPADREPLACEMENTERROR);
+  return bOK;
+}
+
+
+////=============================================================================
+////
+////  Is64Bit
+////
+////
+//BOOL Is64Bit()
+//{
+//  // When this application is compiled as a 32-bit app,  
+//  // and run on a native 64-bit system, Windows will run  
+//  // this application under WOW64.  WOW64 is the Windows-  
+//  // on-Windows subsystem that lets native 32-bit applications  
+//  // run in 64-bit land.  This calls the kernel32.dll  
+//  // API to see if this process is running under WOW64.  
+//  // If it is running under WOW64, then that clearly means  
+//  // this 32-bit application is running on a 64-bit OS,  
+//  // and IsWow64Process will return true. 
+//  typedef BOOL (WINAPI *PFIsWow64Process)(HANDLE, BOOL *);
+//  BOOL bIs64Bit = FALSE;  
+//  PFIsWow64Process pfIsWow64Process = (PFIsWow64Process)GetProcAddress(GetModuleHandle(L"kernel32"), "IsWow64Process");
+//  if (NULL != pfIsWow64Process)
+//    pfIsWow64Process(GetCurrentProcess(), &bIs64Bit);
+//  return bIs64Bit;
+//}
+
+
+//=============================================================================
+//
+//  ExtractSupportFiles
+//
+//
+void ExtractSupportFiles()
+{
+  BOOL ok = ExtractResource(IDR_SUPPORT_LICENSE, L"License.txt")
+    && ExtractResource(IDR_SUPPORT_TXT, L"Notepad2.txt")
+    && ExtractResource(IDR_SUPPORT_SCR_REPLACEMENT_E, L"notepad2_notepad-replacement_enable.cmd")
+    && ExtractResource(IDR_SUPPORT_SCR_REPLACEMENT_D, L"notepad2_notepad-replacement_disable.cmd")
+//    && ExtractResource(IDR_SUPPORT_SCR_REPLACEMENT_E64, L"notepad2_notepad-replacement_enable_x64.cmd")
+//    && ExtractResource(IDR_SUPPORT_SCR_REPLACEMENT_D64, L"notepad2_notepad-replacement_disable_x64.cmd")
+    && ExtractResource(IDR_SUPPORT_SCR_SHELL_E, L"notepad2_shell-integration_enable.cmd")
+    && ExtractResource(IDR_SUPPORT_SCR_SHELL_D, L"notepad2_shell-integration_disable.cmd")
+    && ExtractResource(IDR_SUPPORT_DOC_FAQ, L"notepad2-FAQs.html")
+    && ExtractResource(IDR_SUPPORT_DOC_REPLACEMENT, L"notepad2-Replacement.html")
+    && ExtractResource(IDR_SUPPORT_DOC_ENCODING, L"notepad2-Encoding.html");
+
+  MsgBox(MBINFO, ok ? IDS_EXTRACTFILESOK : IDS_EXTRACTFILESERROR);
+}
+
+//=============================================================================
+//
+//  ExtractResource
+//
+//
+BOOL ExtractResource(int id, LPCWSTR filename)
+{
+  HRSRC hResInfo;
+  DWORD dwSize;
+  HGLOBAL hRes;
+  PVOID pRes;
+  WCHAR strPath[1024];
+  DWORD dwNumWritten;
+  HANDLE hFile;
+  BOOL ok;
+
+  hResInfo = FindResource(g_hInstance, MAKEINTRESOURCE(id), RT_RCDATA);
+  if (NULL == hResInfo)
+    return FALSE;
+
+  dwSize = SizeofResource(g_hInstance, hResInfo);
+
+  hRes = LoadResource(g_hInstance, hResInfo);
+  pRes = LockResource(hRes);
+
+  GetModuleFileName(NULL, strPath, COUNTOF(strPath));
+  PathRemoveFileSpec(strPath);
+  PathAppend(strPath, filename);
+ 
+  hFile = CreateFile(strPath, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+  if (INVALID_HANDLE_VALUE == hFile)
+    return FALSE;
+
+  ok = WriteFile(hFile, pRes, dwSize, &dwNumWritten, NULL);
+  CloseHandle(hFile);
+
+  return ok;
+}
+
+
+//=============================================================================
+//
+//  ShowSelectionMargin
+//
+//
+void ShowSelectionMargin()
+{
+  BOOL bShow = bShowSelectionMargin;
+
+  int iFirst = SendMessage( hwndEdit , SCI_MARKERNEXT , 0 , 1 );
+  if (iFirst >= 0)
+    bShow = TRUE;
+
+  if (bShow)
+    SendMessage( hwndEdit , SCI_MARKERDEFINEPIXMAP , 0 , (LPARAM)bookmark_pixmap );
+  SendMessage(hwndEdit,SCI_SETMARGINWIDTHN,1,(bShow)?16:0);
+}
 
 
 ///  End of Notepad2.c  \\\

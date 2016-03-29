@@ -214,6 +214,10 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         WCHAR wch[256];
         LOGFONT lf;
 
+
+        WCHAR szIniInfo[1024];
+
+
         SetDlgItemText(hwnd,IDC_VERSION,VERSION_FILEVERSION_LONG);
         SetDlgItemText(hwnd,IDC_COPYRIGHT,VERSION_LEGALCOPYRIGHT_SHORT);
         SetDlgItemText(hwnd,IDC_AUTHORNAME,VERSION_AUTHORNAME);
@@ -246,9 +250,43 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
           SetDlgItemText(hwnd,IDC_EMAIL,wch);
         }
 
+
+        if (GetDlgItem(hwnd,IDC_EMAILWZ) == NULL) {
+          SetDlgItemText(hwnd,IDC_EMAILWZ2,VERSION_EMAILDISPLAYWZ);
+          ShowWindow(GetDlgItem(hwnd,IDC_EMAILWZ2),SW_SHOWNORMAL);
+        }
+        else {
+          wsprintf(wch,L"<A>%s</A>",VERSION_EMAILDISPLAYWZ);
+          SetDlgItemText(hwnd,IDC_EMAILWZ,wch);
+        }
+        if (lstrlen(szIniFile))
+          wsprintf(szIniInfo, L"%s", szIniFile);
+        else
+          wsprintf(szIniInfo, L"(not used)");
+        SetDlgItemText(hwnd, IDC_INIPATH, szIniInfo);
+
+        SendMessage(GetDlgItem(hwnd,IDC_REPLACENOTEPAD), BCM_SETSHIELD, 0, TRUE);
+
+
         CenterDlgInParent(hwnd);
       }
       return TRUE;
+
+
+    case WM_THEMECHANGED:
+      {
+        //InvalidateRect(hwnd, NULL, TRUE); 
+      }
+      break;
+
+    case WM_PAINT:
+      {
+        //HBITMAP hBmp;
+        //hBmp = (HBITMAP)LoadImage(g_hInstance, MAKEINTRESOURCE(IDB_WZ_RECOMMEND), IMAGE_BITMAP, 0, 0, LR_LOADTRANSPARENT | LR_LOADMAP3DCOLORS | LR_SHARED);
+        //SendMessage(GetDlgItem(hwnd, IDC_WZ_RECOMMEND), STM_SETIMAGE, IMAGE_BITMAP, (LPARAM)hBmp);
+      }
+      return FALSE;
+
 
     case WM_NOTIFY:
       {
@@ -264,11 +302,31 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
               else if (pnmhdr->idFrom == IDC_EMAIL) {
                 ShellExecute(hwnd,L"open",L"mailto:florian.balmer@gmail.com",NULL,NULL,SW_SHOWNORMAL);
               }
+
+
+              else if (pnmhdr->idFrom == IDC_EMAILWZ) {
+                ShellExecute(hwnd,L"open",L"mailto:woj@ziembla.com",NULL,NULL,SW_SHOWNORMAL);
+              }
+
+
             }
             break;
         }
       }
       break;
+
+
+    case WM_ACTIVATE:
+      {
+        SetDlgItemText(hwnd,IDC_REPLACENOTEPAD,NotepadReplacement_IsEnabled() ? L" Restore original notepad.exe " : L" Replace system notepad.exe ");
+      }
+      break;
+    case WM_SETFOCUS:
+      {
+        SetDlgItemText(hwnd,IDC_REPLACENOTEPAD,NotepadReplacement_IsEnabled() ? L" Restore original notepad.exe " : L" Replace system notepad.exe ");
+      }
+      break;
+
 
     case WM_COMMAND:
 
@@ -278,6 +336,16 @@ INT_PTR CALLBACK AboutDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam)
         case IDCANCEL:
           EndDialog(hwnd,IDOK);
           break;
+
+
+        case IDC_REPLACENOTEPAD:
+          NotepadReplacement_ExecuteChange(hwnd);
+          break;
+        case IDC_EXTRACTFILES:
+          ExtractSupportFiles();
+          break;
+
+
       }
       return TRUE;
   }
@@ -548,8 +616,8 @@ INT_PTR CALLBACK OpenWithDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lParam
               break;
 
             case LVN_ITEMCHANGED: {
-                NM_LISTVIEW *pnmlv = (NM_LISTVIEW*)lParam;
-                EnableWindow(GetDlgItem(hwnd,IDOK),(pnmlv->uNewState & LVIS_SELECTED));
+                //NM_LISTVIEW *pnmlv = (NM_LISTVIEW*)lParam;
+                //EnableWindow(GetDlgItem(hwnd,IDOK),(pnmlv->uNewState & LVIS_SELECTED)); //commented out because disabled OK after reloading some icons!
               }
               break;
 
@@ -751,8 +819,8 @@ INT_PTR CALLBACK FavoritesDlgProc(HWND hwnd,UINT umsg,WPARAM wParam,LPARAM lPara
               break;
 
             case LVN_ITEMCHANGED: {
-                NM_LISTVIEW *pnmlv = (NM_LISTVIEW*)lParam;
-                EnableWindow(GetDlgItem(hwnd,IDOK),(pnmlv->uNewState & LVIS_SELECTED));
+                //NM_LISTVIEW *pnmlv = (NM_LISTVIEW*)lParam;
+                //EnableWindow(GetDlgItem(hwnd,IDOK),(pnmlv->uNewState & LVIS_SELECTED)); //commented out because disabled OK after reloading some icons!
               }
               break;
 
@@ -1026,6 +1094,11 @@ DWORD WINAPI FileMRUIconThread(LPVOID lpParam) {
       lvi.iSubItem = 0;
       ListView_SetItem(hwnd,&lvi);
     }
+
+
+    //Sleep(1000);
+
+
     iItem++;
   }
 

@@ -194,3 +194,5 @@ BOOL IL_GetDisplayName(LPSHELLFOLDER,
 
 
 ///   End of Dlapi.h   \\\
+
+typedef IShellIcon* LPSHELLICON;

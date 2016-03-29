@@ -8,6 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include <winres.h>
+//#include <windows.h>
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -112,6 +113,11 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Propert&ies...",              IDM_FILE_PROPERTIES
         MENUITEM "Create &Desktop Link",        IDM_FILE_CREATELINK
+
+
+        MENUITEM "Copy Path To Clipboard\tShift+F9",      IDM_FILE_COPYPATHNAME
+
+
         MENUITEM SEPARATOR
         POPUP "&Favorites"
         BEGIN
@@ -238,6 +244,19 @@ BEGIN
             MENUITEM "Select To Ne&xt\tF2",         IDM_EDIT_SELTONEXT
             MENUITEM "Select To Pre&vious\tShift+F2", IDM_EDIT_SELTOPREV
         END
+
+
+        POPUP "Bookmar&ks"
+        BEGIN
+            MENUITEM "&Toggle\tAlt+.",              BME_EDIT_BOOKMARKTOGGLE
+            MENUITEM SEPARATOR
+            MENUITEM "Goto &Next\tCtrl+Shift+.",    BME_EDIT_BOOKMARKNEXT
+            MENUITEM "Goto &Previous\tCtrl+Shift+,",BME_EDIT_BOOKMARKPREV
+            MENUITEM SEPARATOR
+            MENUITEM "&Clear All",                  BME_EDIT_BOOKMARKCLEAR
+        END
+
+
         MENUITEM SEPARATOR
         MENUITEM "&Find...\tCtrl+F",            IDM_EDIT_FIND
         MENUITEM "Sa&ve Find Text\tAlt+F3",     IDM_EDIT_SAVEFIND
@@ -561,6 +580,13 @@ BEGIN
     "Z",            IDM_EDIT_STRIP1STCHAR,  VIRTKEY, ALT, NOINVERT
     "Z",            IDM_EDIT_REDO,          VIRTKEY, SHIFT, CONTROL,
                                                     NOINVERT
+
+
+    VK_OEM_PERIOD,  BME_EDIT_BOOKMARKTOGGLE, VIRTKEY, ALT, NOINVERT
+    VK_OEM_PERIOD,  BME_EDIT_BOOKMARKNEXT,  VIRTKEY, CONTROL, SHIFT, NOINVERT
+    VK_OEM_COMMA,   BME_EDIT_BOOKMARKPREV,  VIRTKEY, CONTROL, SHIFT, NOINVERT
+
+
 END
 
 IDR_ACCFINDREPLACE ACCELERATORS
@@ -583,13 +609,13 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 226, 70
+IDD_ABOUT DIALOGEX 0, 0, 306, 154
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_NOFAILCREATE | WS_POPUP |
     WS_CAPTION | WS_SYSMENU
 CAPTION "Notepad2"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,169,49,50,14
+    DEFPUSHBUTTON   "OK",IDOK,189,49,110,14
     ICON            IDR_MAINWND,IDC_STATIC,7,7,20,20
     LTEXT           "",IDC_VERSION,45,7,174,8
     LTEXT           "",IDC_COPYRIGHT,45,19,174,8
@@ -598,6 +624,16 @@ BEGIN
     LTEXT           "",IDC_AUTHORNAME,45,43,116,8
     LTEXT           "",IDC_EMAIL2,45,55,116,8,NOT WS_VISIBLE | WS_DISABLED
     CONTROL         "",IDC_EMAIL,"SysLink",WS_TABSTOP,45,55,116,10
+
+
+    LTEXT           "Modified by Wojciech Ziembla (using some code from Dan of RLVision.com)",IDC_STATIC,45,69,240,8
+    LTEXT           "",IDC_EMAILWZ2,45,69,126,8,NOT WS_VISIBLE | WS_DISABLED
+    CONTROL         "",IDC_EMAILWZ,"SysLink",WS_TABSTOP,45,81,126,10
+    LTEXT           "Settings file:",IDC_STATIC,45,97,43,10
+    EDITTEXT        IDC_INIPATH,90,96,207,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      " Replace notepad ",IDC_REPLACENOTEPAD,45,114,144,14
+    PUSHBUTTON      " Extract support files ",IDC_EXTRACTFILES,45,130,144,14
+    CONTROL         "",IDC_WZ_RECOMMEND,"Static",SS_BITMAP,204,120,0,0
 END
 
 IDD_FIND DIALOGEX 0, 0, 272, 101
@@ -1415,8 +1451,13 @@ BEGIN
     IDS_UNTITLED            "Untitled"
     IDS_TITLEEXCERPT        """%s"""
     IDS_READONLY            "(Read Only)"
-    IDS_DOCPOS              "Ln %s : %s   Col %s   Sel %s"
-    IDS_DOCPOS2             "Ln %s : %s   Col %s : %s   Sel %s"
+//    IDS_DOCPOS              "Ln %s : %s   Col %s   Sel %s"
+//    IDS_DOCPOS2             "Ln %s : %s   Col %s : %s   Sel %s"
+
+    IDS_DOCPOS              "Ln %s : %s   Col %s   Sel %s   Sel Ln %s"
+    IDS_DOCPOS2             "Ln %s : %s   Col %s : %s   Sel %s   Sel Ln %s"
+    IDS_DOCSIZE_ESTIMATED   "±%s"
+
     IDS_DOCSIZE             "%s"
     IDS_LOADFILE            "Loading ""%s""..."
     IDS_SAVEFILE            "Saving ""%s""..."
@@ -1555,10 +1596,10 @@ BEGIN
     61013                   "C;Baltic (DOS-775);DOS-775"
     61014                   "C;Baltic (ISO-8859-4);ISO-8859-4"
     61015                   "C;Baltic (Windows-1257);Windows-1257"
-    61016                   "C;Central European (DOS-852);DOS-852"
-    61017                   "C;Central European (ISO-8859-2);ISO-8859-2"
-    61018                   "C;Central European (Mac);Mac (Central)"
-    61019                   "C;Central European (Windows-1250);Windows-1250"
+    61016                   "B1;Central European (DOS-852);DOS-852"
+    61017                   "B1;Central European (ISO-8859-2);ISO-8859-2"
+    61018                   "B1;Central European (Mac);Mac (Central)"
+    61019                   "B1;Central European (Windows-1250);Windows-1250"
     61020                   "C;Chinese Simplified (GBK);GBK"
     61021                   "C;Chinese Simplified (Mac);Mac (zh-cn)"
     61022                   "C;Chinese Traditional (Big5);Big5"
@@ -1615,10 +1656,10 @@ BEGIN
     61061                   "C;Turkish (Windows-1254);Windows-1254"
     61062                   "C;Ukrainian (Mac);Mac (Ukrainian)"
     61063                   "C;Vietnamese (Windows-1258);Windows-1258"
-    61064                   "B;Western European (DOS-850);DOS-850"
-    61065                   "B;Western European (ISO-8859-1);ISO-8859-1"
-    61066                   "B;Western European (Mac);Mac (Western)"
-    61067                   "B;Western European (Windows-1252);Windows-1252"
+    61064                   "B0;Western European (DOS-850);DOS-850"
+    61065                   "B0;Western European (ISO-8859-1);ISO-8859-1"
+    61066                   "B0;Western European (Mac);Mac (Western)"
+    61067                   "B0;Western European (Windows-1252);Windows-1252"
     61068                   "D0;IBM EBCDIC (US-Canada);EBCDIC (US)"
     61069                   "D1;IBM EBCDIC (International);EBCDIC (Int.)"
     61070                   "D2;IBM EBCDIC (Greek Modern);EBCDIC (GR)"
@@ -1867,8 +1908,47 @@ BEGIN
     63257                   "XML Element Text"
 END
 
+
+IDB_WZ_RECOMMEND BITMAP "..\\res\\wz-indispensable_dc.bmp"
+IDB_WZ_RECOMMEND_MASK BITMAP "..\\res\\wz-indispensable_dc_MASK.bmp"
+
+IDR_SUPPORT_LICENSE RCDATA "..\\res\\License.txt"
+IDR_SUPPORT_TXT RCDATA "..\\res\\Notepad2.txt"
+IDR_SUPPORT_SCR_REPLACEMENT_E RCDATA "..\\res\\notepad2_notepad-replacement_enable.cmd"
+IDR_SUPPORT_SCR_REPLACEMENT_D RCDATA "..\\res\\notepad2_notepad-replacement_disable.cmd"
+//IDR_SUPPORT_SCR_REPLACEMENT_E64 RCDATA "..\\notepad2_notepad-replacement_enable_x64.cmd"
+//IDR_SUPPORT_SCR_REPLACEMENT_D64 RCDATA "..\\notepad2_notepad-replacement_disable_x64.cmd"
+IDR_SUPPORT_SCR_SHELL_E RCDATA "..\\res\\notepad2_shell-integration_enable.cmd"
+IDR_SUPPORT_SCR_SHELL_D RCDATA "..\\res\\notepad2_shell-integration_disable.cmd"
+IDR_SUPPORT_DOC_FAQ RCDATA "..\\res\\notepad2-FAQs.html"
+IDR_SUPPORT_DOC_REPLACEMENT RCDATA "..\\res\\notepad2-Replacement.html"
+IDR_SUPPORT_DOC_ENCODING RCDATA "..\\res\\notepad2-Encoding.html"
+
+
+STRINGTABLE 
+BEGIN
+    IDS_NOTEPADREPLACEMENTOK        "Notepad2 has been configured to replace system notepad.exe\n\nOriginal notepad.exe can be restored using ""Restore original notepad.exe"" button on ""About"" window or alternatively by deleting the registry key value ""HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\notepad.exe\\Debugger""\n\nNotepad replacement is a computer-wide setting and therefore for multi-user environments either appropriate security permissions should be set on global notepad2.ini file or redirection to user profiles should be configured in that file."
+    IDS_NOTEPADREPLACEMENTERROR     "Changing notepad replacement mode requires administrative rights"
+    IDS_NOTEPADREPLACEMENTOFF       "Original notepad.exe has been restored"
+    IDS_EXTRACTFILESOK              "Support files successfully saved to program directory"
+    IDS_EXTRACTFILESERROR           "Error saving support files to program directory!\n\nCheck file creation permission to program directory or try copying and extracting files in different directory"
+END
+
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
+
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DES)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+IDB_WZ_RECOMMEND BITMAP "..\\res\\wz-polecam_dc.bmp"
+IDB_WZ_RECOMMEND_MASK BITMAP "..\\res\\wz-polecam_dc_MASK.bmp"
+
+#endif
 
 
 /////////////////////////////////////////////////////////////////////////////

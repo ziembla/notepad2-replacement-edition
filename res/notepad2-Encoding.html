@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="HTML Tidy for Windows (vers 25 March 2009), see www.w3.org" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <title>Notepad2 ― Encoding Tutorial</title>
+</head>
+
+<body>
+  <h1>Notepad2 ― Encoding Tutorial</h1>
+
+  <p>The following document is an overview of the enhanced encoding support introduced with Notepad2 version 4.0. <em>Please note that this information does not apply to earlier versions of Notepad2.</em></p>
+
+  <ol>
+    <li><a href="#t1">Default ANSI Mode</a></li>
+
+    <li><a href="#t2">Recoding a File</a></li>
+
+    <li><a href="#t3">Using Encoding Tags</a></li>
+
+    <li><a href="#t4">Setting Default Options</a></li>
+
+    <li><a href="#t5">Encoding Conversion</a></li>
+
+    <li><a href="#t6">Possible Loss of Data</a></li>
+
+    <li><a href="#t7">Editing MS-DOS (OEM) Files</a></li>
+
+    <li><a href="#t8">Outlook</a></li>
+  </ol>
+
+  <h3 id="t1">Default ANSI Mode</h3>
+
+  <p>Let's assume you have received a simple html file to display some letters from the Greek alphabet. This file has been created on a Macintosh computer, and has been saved in the <em>Mac (Greek)</em> code page. Opening this file with Notepad2 (or any other text editor) on a English Windows system usually results in incorrect display.</p>
+
+  <blockquote>
+    <img alt="" src="encoding01.png" />
+  </blockquote>
+
+  <p>The statusbar indicates that Notepad2 is working in ANSI mode, which means that the displayed text is interpreted as if it were encoded in the system default ANSI code page. Plain text files, which are not automatically detected by Notepad2 to be in UTF-8 or another Unicode format, are usually encoded in the system default ANSI code page, that's why ANSI mode is the recommended default setting.</p>
+
+  <h3 id="t2">Recoding a File</h3>
+
+  <p>In the case of the html file transferred from the Mac, however, we need the file contents to be reinterpreted as being encoded in the <em>Mac (Greek)</em> encoding. To achieve this, Notepad2 provides the <em>Recode</em> command (F8), to <em>reload the file from disk and reinterpret the file contents in the desired encoding.</em></p>
+
+  <blockquote>
+    <img alt="" src="encoding02.png" />
+  </blockquote>
+
+  <p>The file is now displayed properly.</p>
+
+  <blockquote>
+    <img alt="" src="encoding03.png" />
+  </blockquote>
+
+  <p>If the file has already been modified before <em>recoding</em> it, you'll be asked whether to save your changes, first. This is usually no problem with simple changes consisting just of some ASCII characters (such as adding or modifying an encoding tag, as explained below), as most encodings use common code points for the 7-bit ASCII character set. However, if complex changes have already been done before realizing that the file was loaded with the wrong encoding, it's recommended to copy the modifications to clipboard prior to <em>recoding</em> (without saving) the file, and then reinserting the changes from clipboard.</p>
+
+  <h3 id="t3">Using Encoding Tags</h3>
+
+  <p>To have the sample html file loaded with the correct encoding, the next time it is opened, a html content-type meta tag can be added, specifying <em>Mac (Greek)</em> as the file encoding.</p>
+
+  <blockquote>
+    <img alt="" src="encoding04.png" />
+  </blockquote>
+
+  <p>Notepad2 is able to parse encoding tags and automatically perform the correct encoding conversion (or, <em>reinterpretation</em>) upon loading a file. This feature is based on <a href="notepad2-FAQs#q28">basic Emacs file variable support</a> introduced with Notepad2 version 3.0 (the reason I've added the complicated, initially error-prone file variable parsing was the ability to support encoding tags, at a later stage).</p>
+
+  <p>Encoding tag parsing is performed according to the following rules: the first (and, if nothing is found, also the last) 512 bytes of a file are scanned for statements determining the file encoding, such as <tt>coding:"ibm437"</tt> or <tt>"encoding==latin2"</tt>. The statement with the highest priority is <tt>encoding</tt>, as this is usually at the top of XML files. If no such expression is present, <tt>charset</tt>, and finally <tt>coding</tt> instructions are searched.</p>
+
+  <p>Encoding tag parsing works with any file type, not just html, as illustrated by the following sample comment at the top of a CGI script:</p>
+
+  <blockquote>
+    <pre>
+# mode: perl;
+# coding: koi8-r;
+</pre>
+  </blockquote>
+
+  <p>The encoding <em>identifiers</em> (i.e. the part of the encoding tag actually specifying the name of the encoding) recognized by Notepad2 are mostly taken from this <a href="http://msdn.microsoft.com/en-us/library/aa752010.aspx">list</a> for Internet Explorer, narrowed a bit to the most common forms. To insert an encoding identifier for the currently selected file encoding, press Ctrl+F8 (this command is not available for UTF-16 and some other encodings not sharing the 7-bit ASCII character set).</p>
+
+  <p>Encoding tags are ignored if the file contains a UTF-16 little-endian or big-endian byte order mark, or a UTF-8 signature, all of which unambiguously determine the file encoding. Encoding tags are also ignored if the file is manually <em>recoded</em> by the user (F8). Additionally, Notepad2 can be launched with the <tt>--e</tt> command line switch to specify a source encoding:</p>
+
+  <blockquote>
+    <pre>
+notepad2.exe --e x-mac-greek encoding-test.html
+</pre>
+  </blockquote>
+
+  <p>Encoding tag parsing can be disabled permanently in <em>File</em>, <em>Encoding</em>, <em>Default</em>, or temporarily bypassed when reloading the file with Alt+F8 (the latter also affecting other file variables, like syntax scheme, tab-width, etc.).</p>
+
+  <h3 id="t4">Setting Default Options</h3>
+
+  <blockquote>
+    <img alt="" src="encoding05.png" />
+  </blockquote>
+
+  <p>This dialog box (<em>File</em>, <em>Encoding</em>, <em>Default</em>) provides a way to predefine the encoding for non-Unicode and non-UTF-8 files, namely by setting the desired encoding as the default. As already mentioned above, the recommendation is to use either ANSI or UTF-8 as the default. Like this, no encoding conversion needs to be performed when loading non-UTF-8 files.</p>
+
+  <p>The <em>Open 7-bit ASCII files in UTF-8 mode</em> setting can be used to have ASCII files always loaded as UTF-8. Normally, this only happens if UTF-8 is set as the default. This option can be enabled temporarily by pressing Shift+F8, which will reload the file from disk and open it in UTF-8 mode (unlike explicit <em>recoding</em> as UTF-8, this action will only open valid UTF-8 files in UTF-8 mode, but otherwise fallback to ANSI, or the default encoding, respectively).</p>
+
+  <p>The Windows XP encoding detection routines sometimes deliver wrong results for ANSI files, pretending the format being Unicode without byte order mark, which results in garbled display. This problem has been fixed in more recent versions of Windows. Enable <em>Skip automatic Unicode detection</em> if you want to rely solely on Unicode byte order marks for Unicode recognition.</p>
+
+  <h3 id="t5">Encoding Conversion</h3>
+
+  <p>Now you may want to convert the sample <em>Mac (Greek)</em> html file to a different encoding, i.e. <em>Greek (ISO)</em>. That's very easy, just hit F9 and make your choice.</p>
+
+  <blockquote>
+    <img alt="" src="encoding06.png" />
+  </blockquote>
+
+  <p>Don't forget to update the file encoding tag, as otherwise the <em>Greek (ISO)</em> code points are still interpreted as <em>Mac (Greek)</em>, and won't display properly after reloading. As mentioned above, press Ctrl+F8 to insert a common encoding identifier for the currently selected encoding.</p>
+
+  <blockquote>
+    <img alt="" src="encoding07.png" />
+  </blockquote>
+
+  <h3 id="t6">Possible Loss of Data</h3>
+
+  <p>Internally, text is stored in memory as UTF-8, except for ANSI mode. That's why, for most encodings, non-representable characters can be entered. In this case (i.e. when adding some Spanish accents or German umlauts to a <em>Greek (ISO)</em> file), a warning about a potential loss of data will be issued when saving the file.</p>
+
+  <blockquote>
+    <img alt="" src="encoding08.png" />
+  </blockquote>
+
+  <p>The Windows API code page conversion routines usually replace unsupported characters with question marks, which appear the next time the file is reopened. Before closing the file and thus discarding the original, loss-free text from memory, try saving again with another encoding, and test if it supports all the necessary characters. Alternatively (and preferably) switch to UTF-8 or UTF-16 to make sure no characters are lost.</p>
+
+  <h3 id="t7">Editing MS-DOS (OEM) Files</h3>
+
+  <p>Editing MS-DOS (OEM) text files integrates with enhanced encoding support. By default, OEM files are loaded in ANSI mode.</p>
+
+  <blockquote>
+    <img alt="" src="encoding09.png" />
+  </blockquote>
+
+  <p>The hotkey Ctrl+Shift+O <em>recodes</em> the currently loaded file in the system default OEM code page. It's no longer necessary to convert text back to OEM when saving the file. <em>Note:</em> a <tt>"coding:oem;"</tt> tag can be used to indicate a file is encoded in the system default OEM code page.</p>
+
+  <blockquote>
+    <img alt="" src="encoding10.png" />
+  </blockquote>
+
+  <p>The analog hotkey Ctrl+Shift+A <em>recodes</em> the currently loaded file in the system default ANSI code page. As of Notepad2 version 4.2.25, the hotkey Ctrl+Shift+F <em>recodes</em> the currently loaded file in the code page set as default by the user (<em>File</em>, <em>Encoding</em>, <em>Default</em>).</p>
+
+  <h3 id="t8">Outlook</h3>
+
+  <p>At the current development stage, Notepad2 supports a handpicked list of more than 60 different encodings, provided that the appropriate code page conversion tables are installed on your system. I may be adding support for more encodings, in the future.</p>
+
+  <p>Notepad2 also supports some encodings for right-to-left languages, such as Arabic or Hebrew. However, true bidirectional text editing is not possible with Notepad2, so far.</p>
+  <hr />
+
+  <address>
+    <small>© <a href="http://www.flos-freeware.ch">Florian Balmer</a> 1996-2011<br />
+    Page last modified: July 01, 2011</small>
+  </address>
+</body>
+</html>

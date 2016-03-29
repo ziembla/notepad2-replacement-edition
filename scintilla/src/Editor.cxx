@@ -215,6 +215,12 @@ Editor::Editor() {
 
 	llc.SetLevel(LineLayoutCache::llcCaret);
 	posCache.SetSize(0x400);
+
+
+	watermarkBitmap = NULL;
+	watermarkBitmapMask = NULL;
+
+
 }
 
 Editor::~Editor() {
@@ -964,7 +970,12 @@ void Editor::ScrollTo(int line, bool moveThumb) {
 		StyleToPositionInView(PositionAfterArea(GetClientRectangle()));
 #ifndef UNDER_CE
 		// Perform redraw rather than scroll if many lines would be redrawn anyway.
-		if ((abs(linesToMove) <= 10) && (paintState == notPainting)) {
+//		if ((abs(linesToMove) <= 10) && (paintState == notPainting)) {
+
+
+		if ((abs(linesToMove) <= 10) && (paintState == notPainting) && NULL == watermarkBitmap) {
+
+
 			ScrollText(linesToMove);
 		} else {
 			Redraw();
@@ -3506,6 +3517,21 @@ void Editor::Paint(Surface *surfaceWindow, PRectangle rcArea) {
 		//Platform::DebugPrintf(
 		//"Layout:%9.6g    Paint:%9.6g    Ratio:%9.6g   Copy:%9.6g   Total:%9.6g\n",
 		//durLayout, durPaint, durLayout / durPaint, durCopy, etWhole.Duration());
+
+
+		if (NULL != watermarkBitmap && rcClient.Width() >= 380 && rcClient.Height() >= 130)
+		{
+			PRectangle rcWatermark = rcClient;
+			rcWatermark.left = rcWatermark.right - 180;
+			rcWatermark.top = rcWatermark.bottom - 70;
+			rcWatermark.right = rcWatermark.left + 160;
+			rcWatermark.bottom = rcWatermark.top + 50;
+			//surfaceWindow->FillRectangle(rcWatermark, vs.edgecolour.allocated);
+			//surfaceWindow->DrawTextClipped(rcWoj, vs.styles[0].font, rcWoj.top + vs.maxAscent, "qqrq", 3, vs.styles[0].back.allocated, vs.caretcolour.allocated);
+			surfaceWindow->DrawBitmap(rcWatermark, watermarkBitmap, watermarkBitmapMask);
+		}
+
+
 		NotifyPainted();
 	}
 }
@@ -8881,6 +8907,13 @@ sptr_t Editor::WndProc(unsigned int iMessage, uptr_t wParam, sptr_t lParam) {
 	case SCI_CHANGELEXERSTATE:
 		pdoc->ChangeLexerState(wParam, lParam);
 		break;
+
+
+	case SCI_SETWATERMARK:
+		watermarkBitmap = (void*)wParam;
+		watermarkBitmapMask = (void*)lParam;
+		InvalidateStyleRedraw();
+
 
 	default:
 		return DefWndProc(iMessage, wParam, lParam);

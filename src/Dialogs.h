@@ -26,6 +26,14 @@
 #define MBYESNOCANCEL  4
 #define MBOKCANCEL     8
 
+
+#ifdef BCM_SETSHIELD
+#undef BCM_SETSHIELD
+#endif
+#define BCM_SETSHIELD 0x160c
+extern WCHAR szIniFile[MAX_PATH];
+
+
 int  MsgBox(int,UINT,...);
 void DisplayCmdLineHelp();
 BOOL GetDirectory(HWND,int,LPWSTR,LPCWSTR,BOOL);

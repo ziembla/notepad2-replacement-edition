@@ -265,6 +265,11 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	Document *pdoc;
 
+
+	void *watermarkBitmap;
+	void *watermarkBitmapMask;
+
+
 	Editor();
 	virtual ~Editor();
 	virtual void Initialise() = 0;
