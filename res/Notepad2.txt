@@ -51,7 +51,7 @@ Modifications ("notepad replacement edition") by Wojciech Ziembla
        shown on "Selection margin" (shown up if necessary)
         Alt+.: toggle bookmark on/off for for current line
         Ctrl+Shift+.: jump to next bookmark
-        Ctrl+Shift+.,: jump to previous bookmark
+        Ctrl+Shift+,: jump to previous bookmark
     - number of selected lines is reported in the statusbar together 
       with the other statistics ("Sel Ln")
   - reordered list of encodings to place Central European ones just after

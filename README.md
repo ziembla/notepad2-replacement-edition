@@ -40,11 +40,10 @@ Modifications in regard to original version:
   - added File menu option for copying current file's path to clipbard (for easy opening in other tools)
   - improved file size calculation (exact for small files, taking into consideration bytes of BOMs and the like)
   - some modifications from Dan of 'RL Vision':
-    - 'bookmark feature' with modified keyboard shortcuts and bookmarks
-       shown on "Selection margin" (shown up if necessary)
-        `Alt+.`: toggle bookmark on/off for for current line
-        `Ctrl+Shift+.`: jump to next bookmark
-        `Ctrl+Shift+.,`: jump to previous bookmark
+    - 'bookmark feature' with modified keyboard shortcuts and bookmarks shown on "Selection margin" (shown up if necessary)
+        - `Alt+.` - toggle bookmark on/off for for current line
+        - `Ctrl+Shift+.` - jump to next bookmark
+        - `Ctrl+Shift+,` - jump to previous bookmark
     - number of selected lines is reported in the statusbar together 
       with the other statistics ("Sel Ln")
   - reordered list of encodings to place Central European ones just after
