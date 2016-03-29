@@ -21,7 +21,7 @@
 
 #define VERSION_FILEVERSION_NUM      4,2,25,4
 #define VERSION_FILEVERSION_SHORT    L"4.2.25.4"
-#define VERSION_FILEVERSION_LONG     L"Notepad2 4.2.25 (modified, build 4)"
+#define VERSION_FILEVERSION_LONG     L"Notepad2 4.2.25 (notepad replacement edition, build 4)"
 #define VERSION_LEGALCOPYRIGHT_SHORT L"Copyright © 2004-2011"
 #define VERSION_LEGALCOPYRIGHT_LONG  L"© Florian Balmer 2004-2011"
 #ifdef _M_AMD64
